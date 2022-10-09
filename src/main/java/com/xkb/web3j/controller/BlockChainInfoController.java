@@ -36,7 +36,7 @@ public class BlockChainInfoController {
      * @author newonexd
      * @date 2022/6/22 21:11
      *
-     * * @return BigInteger
+     * @return BigInteger
      */
     @GetMapping("/blockNumber")
     public BigInteger doGetLatestBlockNumber() throws Exception {
@@ -54,10 +54,10 @@ public class BlockChainInfoController {
      * * @return List<String>
      */
     @GetMapping("/accounts")
-    public List<String> doGetAllAccounts()throws Exception{
+    public List<String> doGetAllAccounts() throws Exception {
         EthAccounts ethAccounts = web3j.ethAccounts().sendAsync().get();
         List<String> accounts = ethAccounts.getAccounts();
-        logger.info("Accounts: {}",accounts);
+        logger.info("Accounts: {}", accounts);
         return accounts;
     }
 
@@ -69,7 +69,7 @@ public class BlockChainInfoController {
      * * @return BigInteger
      */
     @GetMapping("/gasPrice")
-    public BigInteger doGetEthGasPrice()throws Exception{
+    public BigInteger doGetEthGasPrice() throws Exception {
         EthGasPrice ethGasPrice = web3j.ethGasPrice().sendAsync().get();
         BigInteger gasPrice = ethGasPrice.getGasPrice();
         logger.info("Ethereum Gas Price: {}",gasPrice);
@@ -84,13 +84,12 @@ public class BlockChainInfoController {
      * * @return BigInteger
      */
     @GetMapping("/chainId")
-    public BigInteger doGetChainId()throws Exception{
+    public BigInteger doGetChainId() throws Exception {
         EthChainId ethChainId = web3j.ethChainId().sendAsync().get();
         BigInteger chainId = ethChainId.getChainId();
         logger.info("Ethereum Chain Id: {}",chainId);
         return chainId;
     }
-
 
     /**
      * @description 获取CoinBase
@@ -100,13 +99,12 @@ public class BlockChainInfoController {
      * * @return String
      */
     @GetMapping("/coinbase")
-    public String doGetCoinBase()throws Exception{
+    public String doGetCoinBase() throws Exception {
         EthCoinbase ethCoinbase = web3j.ethCoinbase().sendAsync().get();
         String coinBase = ethCoinbase.getAddress();
         logger.info("Ethereum CoinBase Address: {}",coinBase);
         return coinBase;
     }
-
 
     /**
      * @description 根据区块号获取区块信息
@@ -116,7 +114,7 @@ public class BlockChainInfoController {
      * @return String
      */
     @GetMapping("/getBlockInfo")
-    public String doGetAll(@RequestParam(value="blockNumber")Long blockNumber)throws Exception{
+    public String doGetAll(@RequestParam(value="blockNumber")Long blockNumber) throws Exception {
         DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
         EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber,true).sendAsync().get();
         EthBlock.Block block = ethBlock.getBlock();
@@ -126,7 +124,6 @@ public class BlockChainInfoController {
         return info;
     }
 
-
     /**
      * @description 根据区块号获取所有交易
      * @author newonexd
@@ -135,22 +132,24 @@ public class BlockChainInfoController {
      * @return String
      */
     @GetMapping("/getTransactionByBlockNumber")
-    public String doGetTransactionInfoByBlockNumber(@RequestParam(value="blockNumber")Long blockNumber)throws Exception{
+    public String doGetTransactionInfoByBlockNumber(
+            @RequestParam(value="blockNumber") Long blockNumber) throws Exception {
+
         DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
         EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber,true).sendAsync().get();
         List<EthBlock.TransactionResult> transactionResults = ethBlock.getBlock().getTransactions();
         List<Transaction> txInfos = new ArrayList<>();
 
-        transactionResults.forEach(txInfo->{
-            Transaction transaction = (Transaction)txInfo;
+        transactionResults.forEach(txInfo -> {
+            Transaction transaction = (Transaction) txInfo;
             txInfos.add(transaction);
         });
+
         Gson gson = new Gson();
         String transactionInfo = gson.toJson(txInfos);
         logger.info(transactionInfo);
         return transactionInfo;
     }
-
 
     /**
      * @description 根据交易哈希值获取交易信息
@@ -160,16 +159,30 @@ public class BlockChainInfoController {
      * @return String
      */
     @GetMapping("/getTransactionInfoByHash")
-    public String doGetTransactionInfoByHash(@RequestParam(value="txHash")String txHash)throws Exception{
+    public String doGetTransactionInfoByHash(@RequestParam(value="txHash") String txHash) throws Exception {
         EthTransaction transaction = web3j.ethGetTransactionByHash(txHash).sendAsync().get();
         Optional<Transaction> optionalTransaction = transaction.getTransaction();
         StringBuilder txInfo = new StringBuilder();
-        if(optionalTransaction.isPresent()){
+
+        if (optionalTransaction.isPresent()) {
             Transaction transactionInfo = optionalTransaction.get();
             Gson gson = new Gson();
             txInfo.append(gson.toJson(transactionInfo));
         }
+
         logger.info(txInfo.toString());
         return txInfo.toString();
+    }
+
+    /**
+     * @description 获取特定时间之后的所有区块和交易信息并保存到 MySQL
+     * @author xkb
+     * @date 2022/10/09 19:20
+     * @return String
+     */
+    @GetMapping("/recordInfo")
+    public String recordBlockAndTransactionInfo() throws Exception {
+
+        return "Success";
     }
 }

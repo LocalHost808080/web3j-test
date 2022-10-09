@@ -5,4 +5,4 @@ spring:
     application:
         name: ethereum-client
 web3j:
-    client-address: http://localhost:8545
+    client-address: https://mainnet.infura.io/v3/cf58adcd29694b688d88c27136291ace

@@ -1,4 +1,4 @@
-package com.xkb.web3j.web3jethereumtest;
+package com.xkb.web3j;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
