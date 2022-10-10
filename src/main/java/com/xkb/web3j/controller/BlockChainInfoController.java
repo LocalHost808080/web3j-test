@@ -42,7 +42,7 @@ public class BlockChainInfoController {
     public BigInteger doGetLatestBlockNumber() throws Exception {
         EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
         BigInteger blockNumber = ethBlockNumber.getBlockNumber();
-        logger.info("BlockNumber: {}",blockNumber);
+        logger.info("BlockNumber: {}", blockNumber);
         return blockNumber;
     }
 
@@ -51,7 +51,7 @@ public class BlockChainInfoController {
      * @author newonexd
      * @date 2022/6/22 21:11
      *
-     * * @return List<String>
+     * @return List<String>
      */
     @GetMapping("/accounts")
     public List<String> doGetAllAccounts() throws Exception {
@@ -66,13 +66,13 @@ public class BlockChainInfoController {
      * @author newonexd
      * @date 2022/6/22 21:11
      *
-     * * @return BigInteger
+     * @return BigInteger
      */
     @GetMapping("/gasPrice")
     public BigInteger doGetEthGasPrice() throws Exception {
         EthGasPrice ethGasPrice = web3j.ethGasPrice().sendAsync().get();
         BigInteger gasPrice = ethGasPrice.getGasPrice();
-        logger.info("Ethereum Gas Price: {}",gasPrice);
+        logger.info("Ethereum Gas Price: {}", gasPrice);
         return gasPrice;
     }
 
@@ -87,7 +87,7 @@ public class BlockChainInfoController {
     public BigInteger doGetChainId() throws Exception {
         EthChainId ethChainId = web3j.ethChainId().sendAsync().get();
         BigInteger chainId = ethChainId.getChainId();
-        logger.info("Ethereum Chain Id: {}",chainId);
+        logger.info("Ethereum Chain Id: {}", chainId);
         return chainId;
     }
 
@@ -102,7 +102,7 @@ public class BlockChainInfoController {
     public String doGetCoinBase() throws Exception {
         EthCoinbase ethCoinbase = web3j.ethCoinbase().sendAsync().get();
         String coinBase = ethCoinbase.getAddress();
-        logger.info("Ethereum CoinBase Address: {}",coinBase);
+        logger.info("Ethereum CoinBase Address: {}", coinBase);
         return coinBase;
     }
 
@@ -114,9 +114,9 @@ public class BlockChainInfoController {
      * @return String
      */
     @GetMapping("/getBlockInfo")
-    public String doGetAll(@RequestParam(value="blockNumber")Long blockNumber) throws Exception {
+    public String doGetAll(@RequestParam(value = "blockNumber") Long blockNumber) throws Exception {
         DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
-        EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber,true).sendAsync().get();
+        EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber, true).sendAsync().get();
         EthBlock.Block block = ethBlock.getBlock();
         Gson gson = new Gson();
         String info = gson.toJson(block);
@@ -136,7 +136,7 @@ public class BlockChainInfoController {
             @RequestParam(value="blockNumber") Long blockNumber) throws Exception {
 
         DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
-        EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber,true).sendAsync().get();
+        EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber, true).sendAsync().get();
         List<EthBlock.TransactionResult> transactionResults = ethBlock.getBlock().getTransactions();
         List<Transaction> txInfos = new ArrayList<>();
 
@@ -159,7 +159,8 @@ public class BlockChainInfoController {
      * @return String
      */
     @GetMapping("/getTransactionInfoByHash")
-    public String doGetTransactionInfoByHash(@RequestParam(value="txHash") String txHash) throws Exception {
+    public String doGetTransactionInfoByHash(@RequestParam(value = "txHash") String txHash) throws Exception {
+
         EthTransaction transaction = web3j.ethGetTransactionByHash(txHash).sendAsync().get();
         Optional<Transaction> optionalTransaction = transaction.getTransaction();
         StringBuilder txInfo = new StringBuilder();
@@ -175,13 +176,38 @@ public class BlockChainInfoController {
     }
 
     /**
-     * @description 获取特定时间之后的所有区块和交易信息并保存到 MySQL
+     * @description 根据交易哈希值获取交易回执
+     * @author xkb
+     * @date 2022.10.10
+     * @param txHash
+     * @return String
+     */
+    @GetMapping("/getTransactionReceiptByHash")
+    public String doGetTransactionReceiptByHash(@RequestParam(value = "txHash") String txHash) throws Exception {
+
+        EthGetTransactionReceipt getTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).sendAsync().get();
+        Optional<TransactionReceipt> optionalTransactionReceipt = getTransactionReceipt.getTransactionReceipt();
+        StringBuilder txRcpt = new StringBuilder();
+
+        if (optionalTransactionReceipt.isPresent()) {
+            TransactionReceipt transactionReceipt = optionalTransactionReceipt.get();
+            Gson gson = new Gson();
+            txRcpt.append(gson.toJson(transactionReceipt));
+        }
+
+        logger.info("Transaction Receipt: {}", txRcpt);
+        return txRcpt.toString();
+    }
+
+    /**
+     * @description 获取最新的区块和相应的全部交易信息并保存到 MySQL
      * @author xkb
      * @date 2022/10/09 19:20
      * @return String
      */
-    @GetMapping("/recordInfo")
+    @GetMapping("/recordBlkAndTrxInfo")
     public String recordBlockAndTransactionInfo() throws Exception {
+
 
         return "Success";
     }
