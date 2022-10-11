@@ -124,6 +124,19 @@ public class BlockChainInfoController {
         return info;
     }
 
+    // /**
+    //  * @description 根据区块号获取区块回报
+    //  * @author xkb
+    //  * @date 2022/10/10
+    //  * @param blockNumber  区块号
+    //  * @return String
+    //  */
+    // @GetMapping("/getBlockReward")
+    // public String doGetBlockReward(@RequestParam(value = "blockNumber") Long blockNumber) throws Exception {
+    //     DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
+    //     // EthBlock ethBlock = web3j.
+    // }
+
     /**
      * @description 根据区块号获取所有交易
      * @author newonexd

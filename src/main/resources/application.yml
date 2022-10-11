@@ -1,8 +1,18 @@
 server:
     port: 8081
 
-spring:
-    application:
-        name: ethereum-client
 web3j:
     client-address: https://mainnet.infura.io/v3/cf58adcd29694b688d88c27136291ace
+
+spring:
+  application:
+    name: ethereum-client
+  datasource:
+    url: jdbc:mysql://localhost:3306/ethereum?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+    - classpath*:com/**/mapper/*.xml
