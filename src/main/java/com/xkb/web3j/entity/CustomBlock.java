@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -33,13 +35,13 @@ public class CustomBlock implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "区块的序号")
-    private Long number;
+    private BigInteger number;
 
     @ApiModelProperty(value = "区块的最终状态")
     private String status;
 
     @ApiModelProperty(value = "时间戳")
-    private Long timestamp;
+    private BigInteger timestamp;
 
     @ApiModelProperty(value = "该区块所基于的 slot 和 epoch")
     private String proposedOn;
@@ -51,16 +53,16 @@ public class CustomBlock implements Serializable {
     private BigDecimal blockReward;
 
     @ApiModelProperty(value = "到该区块为止的总难度")
-    private Long totalDifficulty;
+    private BigInteger totalDifficulty;
 
     @ApiModelProperty(value = "区块字节数")
-    private Long size;
+    private BigInteger size;
 
     @ApiModelProperty(value = "已用Gas")
-    private Long gasUsed;
+    private BigInteger gasUsed;
 
     @ApiModelProperty(value = "Gas上限")
-    private Long gasLimit;
+    private BigInteger gasLimit;
 
     @ApiModelProperty(value = "Base Fee Per Gas (Ether)")
     private BigDecimal baseFeePerGas;
@@ -81,7 +83,7 @@ public class CustomBlock implements Serializable {
     private String stateRoot;
 
     @ApiModelProperty(value = "nonce值")
-    private Long nonce;
+    private BigInteger nonce;
 
     @ApiModelProperty(value = "叔伯块sha3哈希")
     private String sha3Uncles;
@@ -99,7 +101,7 @@ public class CustomBlock implements Serializable {
     private String mixHash;
 
     @ApiModelProperty(value = "区块难度")
-    private Long difficulty;
+    private BigInteger difficulty;
 
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;

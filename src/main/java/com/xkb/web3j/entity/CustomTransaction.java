@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -39,10 +41,10 @@ public class CustomTransaction implements Serializable {
     private String status;
 
     @ApiModelProperty(value = "区块编号")
-    private Long blockNumber;
+    private BigInteger blockNumber;
 
     @ApiModelProperty(value = "时间戳")
-    private Long timestamp;
+    private BigInteger timestamp;
 
     @ApiModelProperty(value = "交易发起账号")
     private String from;
@@ -51,7 +53,7 @@ public class CustomTransaction implements Serializable {
     private String to;
 
     @ApiModelProperty(value = "交易金额 (Ether)")
-    private Long value;
+    private BigInteger value;
 
     @ApiModelProperty(value = "交易消耗的Gas (Ether)")
     private BigDecimal txFee;
@@ -63,10 +65,10 @@ public class CustomTransaction implements Serializable {
     private BigDecimal etherPrice;
 
     @ApiModelProperty(value = "Gas上限")
-    private Long gasLimit;
+    private BigInteger gasLimit;
 
     @ApiModelProperty(value = "Gas用量")
-    private Long gasUsed;
+    private BigInteger gasUsed;
 
     @ApiModelProperty(value = "出块时的网络基本费用 (Gwei)")
     private BigDecimal gasFeesBase;
@@ -90,7 +92,7 @@ public class CustomTransaction implements Serializable {
     private String nonce;
 
     @ApiModelProperty(value = "交易序号（在区块中）")
-    private Long txIndex;
+    private BigInteger txIndex;
 
     @ApiModelProperty(value = "交易额外数据")
     private String inputData;
@@ -105,7 +107,7 @@ public class CustomTransaction implements Serializable {
     private String s;
 
     @ApiModelProperty(value = "区块累计使用的Gas")
-    private Long cumulativeGasUsed;
+    private BigInteger cumulativeGasUsed;
 
     @ApiModelProperty(value = "bloom日志")
     private String logsBloom;
