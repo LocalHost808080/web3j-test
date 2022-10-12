@@ -1,6 +1,7 @@
 package com.xkb.web3j.entity;
 
 import java.math.BigDecimal;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
@@ -17,13 +18,14 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author XKB
- * @since 2022-10-11
+ * @since 2022-10-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="Transaction对象", description="以太坊交易表")
-public class Transaction implements Serializable {
+@TableName("custom_transaction")
+@ApiModel(value="CustomTransaction对象", description="以太坊交易表")
+public class CustomTransaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,13 +36,13 @@ public class Transaction implements Serializable {
     private String hash;
 
     @ApiModelProperty(value = "交易的最终状态")
-    private Boolean status;
+    private String status;
 
     @ApiModelProperty(value = "区块编号")
-    private Integer blockNumber;
+    private Long blockNumber;
 
     @ApiModelProperty(value = "时间戳")
-    private LocalDateTime timestamp;
+    private Long timestamp;
 
     @ApiModelProperty(value = "交易发起账号")
     private String from;
@@ -49,7 +51,7 @@ public class Transaction implements Serializable {
     private String to;
 
     @ApiModelProperty(value = "交易金额 (Ether)")
-    private BigDecimal value;
+    private Long value;
 
     @ApiModelProperty(value = "交易消耗的Gas (Ether)")
     private BigDecimal txFee;
@@ -58,13 +60,13 @@ public class Transaction implements Serializable {
     private BigDecimal gasPrice;
 
     @ApiModelProperty(value = "CNY/ETH")
-    private Integer etherPrice;
+    private BigDecimal etherPrice;
 
     @ApiModelProperty(value = "Gas上限")
-    private Integer gasLimit;
+    private Long gasLimit;
 
     @ApiModelProperty(value = "Gas用量")
-    private Integer gasUsed;
+    private Long gasUsed;
 
     @ApiModelProperty(value = "出块时的网络基本费用 (Gwei)")
     private BigDecimal gasFeesBase;
@@ -88,7 +90,7 @@ public class Transaction implements Serializable {
     private String nonce;
 
     @ApiModelProperty(value = "交易序号（在区块中）")
-    private Integer txIndex;
+    private Long txIndex;
 
     @ApiModelProperty(value = "交易额外数据")
     private String inputData;
@@ -103,7 +105,7 @@ public class Transaction implements Serializable {
     private String s;
 
     @ApiModelProperty(value = "区块累计使用的Gas")
-    private Integer cumulativeGasUsed;
+    private Long cumulativeGasUsed;
 
     @ApiModelProperty(value = "bloom日志")
     private String logsBloom;

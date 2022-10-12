@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author XKB
- * @since 2022-10-11
+ * @since 2022-10-12
  */
 @RestController
-@RequestMapping("/block")
-public class BlockController {
+@RequestMapping("/custom-block")
+public class CustomBlockController {
 
 }

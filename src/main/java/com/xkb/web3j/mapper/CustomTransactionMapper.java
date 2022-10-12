@@ -1,6 +1,6 @@
 package com.xkb.web3j.mapper;
 
-import com.xkb.web3j.entity.Transaction;
+import com.xkb.web3j.entity.CustomTransaction;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author XKB
- * @since 2022-10-11
+ * @since 2022-10-12
  */
-public interface TransactionMapper extends BaseMapper<Transaction> {
+public interface CustomTransactionMapper extends BaseMapper<CustomTransaction> {
 
 }

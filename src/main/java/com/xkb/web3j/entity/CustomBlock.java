@@ -1,6 +1,7 @@
 package com.xkb.web3j.entity;
 
 import java.math.BigDecimal;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
@@ -17,27 +18,28 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author XKB
- * @since 2022-10-11
+ * @since 2022-10-12
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="Block对象", description="以太坊区块表")
-public class Block implements Serializable {
+@TableName("custom_block")
+@ApiModel(value="CustomBlock对象", description="以太坊区块表")
+public class CustomBlock implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty(value = "区块的最终状态")
-    private Boolean status;
-
     @ApiModelProperty(value = "区块的序号")
-    private Integer number;
+    private Long number;
+
+    @ApiModelProperty(value = "区块的最终状态")
+    private String status;
 
     @ApiModelProperty(value = "时间戳")
-    private LocalDateTime timestamp;
+    private Long timestamp;
 
     @ApiModelProperty(value = "该区块所基于的 slot 和 epoch")
     private String proposedOn;
@@ -49,7 +51,7 @@ public class Block implements Serializable {
     private BigDecimal blockReward;
 
     @ApiModelProperty(value = "到该区块为止的总难度")
-    private String totalDifficulty;
+    private Long totalDifficulty;
 
     @ApiModelProperty(value = "区块字节数")
     private Long size;
@@ -79,7 +81,7 @@ public class Block implements Serializable {
     private String stateRoot;
 
     @ApiModelProperty(value = "nonce值")
-    private String nonce;
+    private Long nonce;
 
     @ApiModelProperty(value = "叔伯块sha3哈希")
     private String sha3Uncles;
@@ -97,7 +99,7 @@ public class Block implements Serializable {
     private String mixHash;
 
     @ApiModelProperty(value = "区块难度")
-    private String difficulty;
+    private Long difficulty;
 
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;

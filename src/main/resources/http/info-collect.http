@@ -1,0 +1,3 @@
+### 获取最新的区块和相应的全部交易信息并保存到 MySQL
+GET http://localhost:8081/infoCollect/latestBlkAndTrx
+Accept: application/json

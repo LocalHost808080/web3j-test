@@ -212,16 +212,15 @@ public class BlockChainInfoController {
         return txRcpt.toString();
     }
 
-    /**
-     * @description 获取最新的区块和相应的全部交易信息并保存到 MySQL
-     * @author xkb
-     * @date 2022/10/09 19:20
-     * @return String
-     */
-    @GetMapping("/recordBlkAndTrxInfo")
-    public String recordBlockAndTransactionInfo() throws Exception {
-
-
-        return "Success";
-    }
+    // /**
+    //  *
+    //  * @param blockNumber
+    //  * @return
+    //  * @throws Exception
+    //  */
+    // public String doGetTransactionReceiptByBlockNumber(
+    //         @RequestParam(value="blockNumber") Long blockNumber) throws Exception {
+    //
+    //     return "";
+    // }
 }
