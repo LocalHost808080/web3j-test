@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -41,10 +43,13 @@ public class CustomBlock implements Serializable {
     private String status;
 
     @ApiModelProperty(value = "时间戳")
-    private BigInteger timestamp;
+    private Date timestamp;
 
     @ApiModelProperty(value = "该区块所基于的 slot 和 epoch")
     private String proposedOn;
+
+    @ApiModelProperty(value = "区块中的交易数量")
+    private Integer txCount;
 
     @ApiModelProperty(value = "出矿账号")
     private String miner;
@@ -53,7 +58,7 @@ public class CustomBlock implements Serializable {
     private BigDecimal blockReward;
 
     @ApiModelProperty(value = "到该区块为止的总难度")
-    private BigInteger totalDifficulty;
+    private String totalDifficulty;
 
     @ApiModelProperty(value = "区块字节数")
     private BigInteger size;
@@ -104,7 +109,7 @@ public class CustomBlock implements Serializable {
     private BigInteger difficulty;
 
     @ApiModelProperty(value = "创建时间")
-    private LocalDateTime createTime;
+    private Date createTime;
 
 
 }

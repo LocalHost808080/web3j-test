@@ -2,6 +2,7 @@ package com.xkb.web3j.mapper;
 
 import com.xkb.web3j.entity.CustomTransaction;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author XKB
  * @since 2022-10-12
  */
+@Repository
 public interface CustomTransactionMapper extends BaseMapper<CustomTransaction> {
 
 }

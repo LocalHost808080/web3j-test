@@ -1,6 +1,7 @@
 package com.xkb.web3j.controller;
 
 import com.google.gson.Gson;
+import com.xkb.web3j.service.CustomBlockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class InfoCollectController {
     @Autowired
     private Web3j web3j;
 
+    @Autowired
+    private CustomBlockService customBlockService;
+
     /**
      * @description 获取最新的区块和相应的全部交易信息并保存到 MySQL
      * @author xkb
@@ -38,7 +42,7 @@ public class InfoCollectController {
         // Todo: Get the latest blockNumber
         EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
         BigInteger blockNumber = ethBlockNumber.getBlockNumber();
-        logger.info("Latest block number: {}", blockNumber);
+        logger.info("Latest block number: #{}", blockNumber);
 
         // Todo: Get the latest block info by blockNumber
         DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
@@ -46,7 +50,7 @@ public class InfoCollectController {
         EthBlock.Block blockInfo = ethBlock.getBlock();
         Gson gson = new Gson();
         String info = gson.toJson(blockInfo);
-        logger.info("Latest block info: {}", info);
+        logger.info("Info of block #{}: {}", blockNumber, info);
 
         // Todo: Get the txInfos in the latest block by blockNumber
         List<EthBlock.TransactionResult> transactionResults = ethBlock.getBlock().getTransactions();
@@ -58,7 +62,15 @@ public class InfoCollectController {
         });
 
         String transactionInfo = gson.toJson(txInfos);
-        logger.info("Transactions in the latest block: {}", transactionInfo);
+        logger.info("Transactions in the block #{}: {}", blockNumber, transactionInfo);
+
+        // Todo: Save the block and transaction info into the database
+        int result1 = customBlockService.saveBlockInfo(blockInfo);
+
+        if (result1 == 1)
+            logger.info("Info of block #{} is saved.", blockNumber);
+        else if (result1 == 0)
+            logger.info("Record of block #{} already exists.", blockNumber);
 
 
         return "Success";
