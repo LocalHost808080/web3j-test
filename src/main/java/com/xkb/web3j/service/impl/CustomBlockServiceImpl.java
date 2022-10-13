@@ -1,19 +1,18 @@
 package com.xkb.web3j.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.xkb.web3j.controller.BlockChainInfoController;
 import com.xkb.web3j.entity.CustomBlock;
 import com.xkb.web3j.mapper.CustomBlockMapper;
 import com.xkb.web3j.service.CustomBlockService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import jnr.ffi.annotations.LongLong;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.core.methods.response.EthBlock;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +27,8 @@ import java.util.List;
 @Service
 public class CustomBlockServiceImpl extends ServiceImpl<CustomBlockMapper, CustomBlock> implements CustomBlockService {
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomBlockServiceImpl.class);
+
     @Autowired
     private CustomBlockMapper customBlockMapper;
 
@@ -38,11 +39,13 @@ public class CustomBlockServiceImpl extends ServiceImpl<CustomBlockMapper, Custo
         wrapper.eq("number", blockInfo.getNumber());
         List<CustomBlock> customBlockList = customBlockMapper.selectList(wrapper);
 
-        if (customBlockList.size() > 0)
+        if (customBlockList.size() > 0) {
+            logger.info("Record of block #{} already exists.", blockInfo.getNumber());
             return 0;
-        else {
+        } else {
             CustomBlock customBlock = convertBlockToCustom(blockInfo);
             customBlockMapper.insert(customBlock);
+            logger.info("Info of block #{} is saved.", blockInfo.getNumber());
             return 1;
         }
     }
@@ -53,10 +56,10 @@ public class CustomBlockServiceImpl extends ServiceImpl<CustomBlockMapper, Custo
         CustomBlock customBlock = new CustomBlock();
 
         customBlock.setNumber(block.getNumber());
-        customBlock.setStatus("Unknown");                       // to be done
+        customBlock.setStatus("");                              // to be done
         long blockTimestamp = Long.parseLong(block.getTimestampRaw().substring(2), 16);
         customBlock.setTimestamp(new Date(blockTimestamp * 1000L));
-        customBlock.setProposedOn("Unknown");                   // to be done
+        customBlock.setProposedOn("");                          // to be done
         customBlock.setTxCount(block.getTransactions().size());
         customBlock.setMiner(block.getMiner());
         customBlock.setBlockReward(new BigDecimal(0));      // to be done

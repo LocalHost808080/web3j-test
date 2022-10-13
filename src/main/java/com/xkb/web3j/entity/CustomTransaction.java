@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -44,16 +46,16 @@ public class CustomTransaction implements Serializable {
     private BigInteger blockNumber;
 
     @ApiModelProperty(value = "时间戳")
-    private BigInteger timestamp;
+    private Date timestamp;
 
     @ApiModelProperty(value = "交易发起账号")
-    private String from;
+    private String fromAccount;
 
     @ApiModelProperty(value = "交易接受账号")
-    private String to;
+    private String toAccount;
 
     @ApiModelProperty(value = "交易金额 (Ether)")
-    private BigInteger value;
+    private BigDecimal value;
 
     @ApiModelProperty(value = "交易消耗的Gas (Ether)")
     private BigDecimal txFee;
@@ -89,7 +91,7 @@ public class CustomTransaction implements Serializable {
     private String txType;
 
     @ApiModelProperty(value = "nonce值")
-    private String nonce;
+    private BigInteger nonce;
 
     @ApiModelProperty(value = "交易序号（在区块中）")
     private BigInteger txIndex;
@@ -113,7 +115,7 @@ public class CustomTransaction implements Serializable {
     private String logsBloom;
 
     @ApiModelProperty(value = "创建时间")
-    private LocalDateTime createTime;
+    private Date createTime;
 
 
 }

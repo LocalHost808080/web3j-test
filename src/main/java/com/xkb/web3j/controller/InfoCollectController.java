@@ -2,6 +2,7 @@ package com.xkb.web3j.controller;
 
 import com.google.gson.Gson;
 import com.xkb.web3j.service.CustomBlockService;
+import com.xkb.web3j.service.CustomTransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,16 @@ import java.util.List;
 @RequestMapping("/infoCollect")
 public class InfoCollectController {
 
-    private static final Logger logger = LoggerFactory.getLogger(BlockChainInfoController.class);
+    private static final Logger logger = LoggerFactory.getLogger(InfoCollectController.class);
 
     @Autowired
     private Web3j web3j;
 
     @Autowired
     private CustomBlockService customBlockService;
+
+    @Autowired
+    private CustomTransactionService customTransactionService;
 
     /**
      * @description 获取最新的区块和相应的全部交易信息并保存到 MySQL
@@ -65,13 +69,11 @@ public class InfoCollectController {
         logger.info("Transactions in the block #{}: {}", blockNumber, transactionInfo);
 
         // Todo: Save the block and transaction info into the database
-        int result1 = customBlockService.saveBlockInfo(blockInfo);
+        int saveBlockCnt = customBlockService.saveBlockInfo(blockInfo);
+        logger.info("Info of {} block(s) is saved.", saveBlockCnt);
 
-        if (result1 == 1)
-            logger.info("Info of block #{} is saved.", blockNumber);
-        else if (result1 == 0)
-            logger.info("Record of block #{} already exists.", blockNumber);
-
+        int saveTxCnt = customTransactionService.saveTransactionInfo(txInfos);
+        logger.info("Info of {} transactions are saved.", saveTxCnt);
 
         return "Success";
     }

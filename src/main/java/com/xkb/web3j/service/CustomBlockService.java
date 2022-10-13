@@ -14,7 +14,7 @@ import org.web3j.protocol.core.methods.response.EthBlock;
  */
 public interface CustomBlockService extends IService<CustomBlock> {
 
-    public int saveBlockInfo(EthBlock.Block blockInfo);
+    int saveBlockInfo(EthBlock.Block blockInfo);
 
-    public CustomBlock convertBlockToCustom(EthBlock.Block block);
+    CustomBlock convertBlockToCustom(EthBlock.Block block);
 }
