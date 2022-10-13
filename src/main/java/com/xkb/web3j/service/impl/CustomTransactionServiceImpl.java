@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.gson.Gson;
 import com.xkb.web3j.entity.CustomTransaction;
 import com.xkb.web3j.mapper.CustomTransactionMapper;
+import com.xkb.web3j.service.BlockChainInfoService;
 import com.xkb.web3j.service.CustomTransactionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.slf4j.Logger;
@@ -40,6 +41,9 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
     @Autowired
     private CustomTransactionMapper customTransactionMapper;
 
+    @Autowired
+    private BlockChainInfoService blockChainInfoService;
+
     @Override
     public int saveTransactionInfo(List<Transaction> txInfos) throws Exception {
 
@@ -67,7 +71,7 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
     public CustomTransaction convertTransactionToCustom(Transaction txInfo) throws Exception {
 
         CustomTransaction customTransaction = new CustomTransaction();
-        TransactionReceipt txRcpt = getTransactionReceiptByHash(txInfo.getHash());
+        TransactionReceipt txRcpt = blockChainInfoService.getTransactionReceiptByHash(txInfo.getHash());
 
         customTransaction.setHash(txInfo.getHash());
         customTransaction.setStatus(txRcpt.getStatus());
@@ -104,21 +108,21 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
         return customTransaction;
     }
 
-    @Override
-    public TransactionReceipt getTransactionReceiptByHash(String txHash) throws Exception {
-
-        EthGetTransactionReceipt getTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).sendAsync().get();
-        Optional<TransactionReceipt> optionalTransactionReceipt = getTransactionReceipt.getTransactionReceipt();
-        StringBuilder txRcpt = new StringBuilder();
-
-        if (optionalTransactionReceipt.isPresent()) {
-            TransactionReceipt transactionReceipt = optionalTransactionReceipt.get();
-            Gson gson = new Gson();
-            txRcpt.append(gson.toJson(transactionReceipt));
-            logger.info("Transaction Receipt of #{}: {}", txHash, txRcpt);
-            return transactionReceipt;
-        }
-
-        return null;
-    }
+    // @Override
+    // public TransactionReceipt getTransactionReceiptByHash(String txHash) throws Exception {
+    //
+    //     EthGetTransactionReceipt getTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).sendAsync().get();
+    //     Optional<TransactionReceipt> optionalTransactionReceipt = getTransactionReceipt.getTransactionReceipt();
+    //     StringBuilder txRcpt = new StringBuilder();
+    //
+    //     if (optionalTransactionReceipt.isPresent()) {
+    //         TransactionReceipt transactionReceipt = optionalTransactionReceipt.get();
+    //         Gson gson = new Gson();
+    //         txRcpt.append(gson.toJson(transactionReceipt));
+    //         logger.info("Transaction Receipt of #{}: {}", txHash, txRcpt);
+    //         return transactionReceipt;
+    //     }
+    //
+    //     return null;
+    // }
 }

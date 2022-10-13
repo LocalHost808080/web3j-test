@@ -1,6 +1,7 @@
 package com.xkb.web3j.controller;
 
 import com.google.gson.Gson;
+import com.xkb.web3j.service.BlockChainInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class BlockChainInfoController {
     private static final Logger logger = LoggerFactory.getLogger(BlockChainInfoController.class);
 
     @Autowired
-    private Web3j web3j;
+    private BlockChainInfoService blockChainInfoService;
 
     /**
      * @description 获取最新的区块号
@@ -40,8 +41,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/blockNumber")
     public BigInteger doGetLatestBlockNumber() throws Exception {
-        EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
-        BigInteger blockNumber = ethBlockNumber.getBlockNumber();
+        BigInteger blockNumber = blockChainInfoService.getLatestBlockNumber();
         logger.info("BlockNumber: {}", blockNumber);
         return blockNumber;
     }
@@ -55,8 +55,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/accounts")
     public List<String> doGetAllAccounts() throws Exception {
-        EthAccounts ethAccounts = web3j.ethAccounts().sendAsync().get();
-        List<String> accounts = ethAccounts.getAccounts();
+        List<String> accounts = blockChainInfoService.getAllAccounts();
         logger.info("Accounts: {}", accounts);
         return accounts;
     }
@@ -70,8 +69,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/gasPrice")
     public BigInteger doGetEthGasPrice() throws Exception {
-        EthGasPrice ethGasPrice = web3j.ethGasPrice().sendAsync().get();
-        BigInteger gasPrice = ethGasPrice.getGasPrice();
+        BigInteger gasPrice = blockChainInfoService.getEthGasPrice();
         logger.info("Ethereum Gas Price: {}", gasPrice);
         return gasPrice;
     }
@@ -85,8 +83,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/chainId")
     public BigInteger doGetChainId() throws Exception {
-        EthChainId ethChainId = web3j.ethChainId().sendAsync().get();
-        BigInteger chainId = ethChainId.getChainId();
+        BigInteger chainId = blockChainInfoService.getChainId();
         logger.info("Ethereum Chain Id: {}", chainId);
         return chainId;
     }
@@ -100,8 +97,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/coinbase")
     public String doGetCoinBase() throws Exception {
-        EthCoinbase ethCoinbase = web3j.ethCoinbase().sendAsync().get();
-        String coinBase = ethCoinbase.getAddress();
+        String coinBase = blockChainInfoService.getCoinBase();
         logger.info("Ethereum CoinBase Address: {}", coinBase);
         return coinBase;
     }
@@ -115,27 +111,12 @@ public class BlockChainInfoController {
      */
     @GetMapping("/getBlockInfo")
     public String doGetAll(@RequestParam(value = "blockNumber") Long blockNumber) throws Exception {
-        DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
-        EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber, true).sendAsync().get();
-        EthBlock.Block block = ethBlock.getBlock();
+        EthBlock.Block block = blockChainInfoService.getAll(blockNumber);
         Gson gson = new Gson();
         String info = gson.toJson(block);
         logger.info(info);
         return info;
     }
-
-    // /**
-    //  * @description 根据区块号获取区块回报
-    //  * @author xkb
-    //  * @date 2022/10/10
-    //  * @param blockNumber  区块号
-    //  * @return String
-    //  */
-    // @GetMapping("/getBlockReward")
-    // public String doGetBlockReward(@RequestParam(value = "blockNumber") Long blockNumber) throws Exception {
-    //     DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
-    //     // EthBlock ethBlock = web3j.
-    // }
 
     /**
      * @description 根据区块号获取所有交易
@@ -148,16 +129,7 @@ public class BlockChainInfoController {
     public String doGetTransactionInfoByBlockNumber(
             @RequestParam(value="blockNumber") Long blockNumber) throws Exception {
 
-        DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
-        EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber, true).sendAsync().get();
-        List<EthBlock.TransactionResult> transactionResults = ethBlock.getBlock().getTransactions();
-        List<Transaction> txInfos = new ArrayList<>();
-
-        transactionResults.forEach(txInfo -> {
-            Transaction transaction = (Transaction) txInfo;
-            txInfos.add(transaction);
-        });
-
+        List<Transaction> txInfos = blockChainInfoService.getTransactionInfoByBlockNumber(blockNumber);
         Gson gson = new Gson();
         String transactionInfo = gson.toJson(txInfos);
         logger.info(transactionInfo);
@@ -174,12 +146,24 @@ public class BlockChainInfoController {
     @GetMapping("/getTransactionInfoByHash")
     public String doGetTransactionInfoByHash(@RequestParam(value = "txHash") String txHash) throws Exception {
 
-        EthTransaction transaction = web3j.ethGetTransactionByHash(txHash).sendAsync().get();
-        Optional<Transaction> optionalTransaction = transaction.getTransaction();
+        // EthTransaction transaction = web3j.ethGetTransactionByHash(txHash).sendAsync().get();
+        // Optional<Transaction> optionalTransaction = transaction.getTransaction();
+        // StringBuilder txInfo = new StringBuilder();
+
+        // if (optionalTransaction.isPresent()) {
+        //     Transaction transactionInfo = optionalTransaction.get();
+        //     Gson gson = new Gson();
+        //     txInfo.append(gson.toJson(transactionInfo));
+        // }
+
+        // logger.info(txInfo.toString());
+        // return txInfo.toString();
+        // return blockChainInfoService.getTransactionInfoByHash(txHash);
+
+        Transaction transactionInfo = blockChainInfoService.getTransactionInfoByHash(txHash);
         StringBuilder txInfo = new StringBuilder();
 
-        if (optionalTransaction.isPresent()) {
-            Transaction transactionInfo = optionalTransaction.get();
+        if (transactionInfo != null) {
             Gson gson = new Gson();
             txInfo.append(gson.toJson(transactionInfo));
         }
@@ -198,12 +182,24 @@ public class BlockChainInfoController {
     @GetMapping("/getTransactionReceiptByHash")
     public String doGetTransactionReceiptByHash(@RequestParam(value = "txHash") String txHash) throws Exception {
 
-        EthGetTransactionReceipt getTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).sendAsync().get();
-        Optional<TransactionReceipt> optionalTransactionReceipt = getTransactionReceipt.getTransactionReceipt();
+        // EthGetTransactionReceipt getTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).sendAsync().get();
+        // Optional<TransactionReceipt> optionalTransactionReceipt = getTransactionReceipt.getTransactionReceipt();
+        // StringBuilder txRcpt = new StringBuilder();
+        //
+        // if (optionalTransactionReceipt.isPresent()) {
+        //     TransactionReceipt transactionReceipt = optionalTransactionReceipt.get();
+        //     Gson gson = new Gson();
+        //     txRcpt.append(gson.toJson(transactionReceipt));
+        // }
+        //
+        // logger.info("Transaction Receipt: {}", txRcpt);
+        // return txRcpt.toString();
+        // return blockChainInfoService.getTransactionReceiptByHash(txHash);
+
+        TransactionReceipt transactionReceipt = blockChainInfoService.getTransactionReceiptByHash(txHash);
         StringBuilder txRcpt = new StringBuilder();
 
-        if (optionalTransactionReceipt.isPresent()) {
-            TransactionReceipt transactionReceipt = optionalTransactionReceipt.get();
+        if (transactionReceipt != null) {
             Gson gson = new Gson();
             txRcpt.append(gson.toJson(transactionReceipt));
         }
@@ -211,16 +207,4 @@ public class BlockChainInfoController {
         logger.info("Transaction Receipt: {}", txRcpt);
         return txRcpt.toString();
     }
-
-    // /**
-    //  *
-    //  * @param blockNumber
-    //  * @return
-    //  * @throws Exception
-    //  */
-    // public String doGetTransactionReceiptByBlockNumber(
-    //         @RequestParam(value="blockNumber") Long blockNumber) throws Exception {
-    //
-    //     return "";
-    // }
 }

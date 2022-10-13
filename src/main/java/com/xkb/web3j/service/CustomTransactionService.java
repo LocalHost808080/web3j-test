@@ -24,5 +24,5 @@ public interface CustomTransactionService extends IService<CustomTransaction> {
 
     CustomTransaction convertTransactionToCustom(Transaction txInfo) throws Exception;
 
-    TransactionReceipt getTransactionReceiptByHash(String txHash) throws Exception;
+    // TransactionReceipt getTransactionReceiptByHash(String txHash) throws Exception;
 }
