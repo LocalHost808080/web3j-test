@@ -1,7 +1,6 @@
 package com.xkb.web3j.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.xkb.web3j.controller.BlockChainInfoController;
 import com.xkb.web3j.entity.CustomBlock;
 import com.xkb.web3j.mapper.CustomBlockMapper;
 import com.xkb.web3j.service.CustomBlockService;

@@ -146,20 +146,6 @@ public class BlockChainInfoController {
     @GetMapping("/getTransactionInfoByHash")
     public String doGetTransactionInfoByHash(@RequestParam(value = "txHash") String txHash) throws Exception {
 
-        // EthTransaction transaction = web3j.ethGetTransactionByHash(txHash).sendAsync().get();
-        // Optional<Transaction> optionalTransaction = transaction.getTransaction();
-        // StringBuilder txInfo = new StringBuilder();
-
-        // if (optionalTransaction.isPresent()) {
-        //     Transaction transactionInfo = optionalTransaction.get();
-        //     Gson gson = new Gson();
-        //     txInfo.append(gson.toJson(transactionInfo));
-        // }
-
-        // logger.info(txInfo.toString());
-        // return txInfo.toString();
-        // return blockChainInfoService.getTransactionInfoByHash(txHash);
-
         Transaction transactionInfo = blockChainInfoService.getTransactionInfoByHash(txHash);
         StringBuilder txInfo = new StringBuilder();
 
@@ -181,20 +167,6 @@ public class BlockChainInfoController {
      */
     @GetMapping("/getTransactionReceiptByHash")
     public String doGetTransactionReceiptByHash(@RequestParam(value = "txHash") String txHash) throws Exception {
-
-        // EthGetTransactionReceipt getTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).sendAsync().get();
-        // Optional<TransactionReceipt> optionalTransactionReceipt = getTransactionReceipt.getTransactionReceipt();
-        // StringBuilder txRcpt = new StringBuilder();
-        //
-        // if (optionalTransactionReceipt.isPresent()) {
-        //     TransactionReceipt transactionReceipt = optionalTransactionReceipt.get();
-        //     Gson gson = new Gson();
-        //     txRcpt.append(gson.toJson(transactionReceipt));
-        // }
-        //
-        // logger.info("Transaction Receipt: {}", txRcpt);
-        // return txRcpt.toString();
-        // return blockChainInfoService.getTransactionReceiptByHash(txHash);
 
         TransactionReceipt transactionReceipt = blockChainInfoService.getTransactionReceiptByHash(txHash);
         StringBuilder txRcpt = new StringBuilder();

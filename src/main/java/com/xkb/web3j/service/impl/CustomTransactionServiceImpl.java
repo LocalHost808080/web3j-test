@@ -1,7 +1,6 @@
 package com.xkb.web3j.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.google.gson.Gson;
 import com.xkb.web3j.entity.CustomTransaction;
 import com.xkb.web3j.mapper.CustomTransactionMapper;
 import com.xkb.web3j.service.BlockChainInfoService;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
@@ -107,22 +105,4 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
 
         return customTransaction;
     }
-
-    // @Override
-    // public TransactionReceipt getTransactionReceiptByHash(String txHash) throws Exception {
-    //
-    //     EthGetTransactionReceipt getTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).sendAsync().get();
-    //     Optional<TransactionReceipt> optionalTransactionReceipt = getTransactionReceipt.getTransactionReceipt();
-    //     StringBuilder txRcpt = new StringBuilder();
-    //
-    //     if (optionalTransactionReceipt.isPresent()) {
-    //         TransactionReceipt transactionReceipt = optionalTransactionReceipt.get();
-    //         Gson gson = new Gson();
-    //         txRcpt.append(gson.toJson(transactionReceipt));
-    //         logger.info("Transaction Receipt of #{}: {}", txHash, txRcpt);
-    //         return transactionReceipt;
-    //     }
-    //
-    //     return null;
-    // }
 }

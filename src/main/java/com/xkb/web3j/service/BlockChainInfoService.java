@@ -1,6 +1,5 @@
 package com.xkb.web3j.service;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
