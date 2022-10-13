@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.math.BigInteger;
-import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -58,7 +57,7 @@ public class CustomBlock implements Serializable {
     private BigDecimal blockReward;
 
     @ApiModelProperty(value = "到该区块为止的总难度")
-    private String totalDifficulty;
+    private BigInteger totalDifficulty;
 
     @ApiModelProperty(value = "区块字节数")
     private BigInteger size;

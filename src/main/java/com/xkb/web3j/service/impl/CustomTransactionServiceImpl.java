@@ -55,7 +55,7 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
             if (customTransactionList.size() == 0) {
                 CustomTransaction customTransaction = convertTransactionToCustom(txInfo);
                 customTransactionMapper.insert(customTransaction);
-                logger.info("Info of transaction #{} is saved.", txInfo.getHash());
+                // logger.info("Info of transaction #{} is saved.", txInfo.getHash());
                 insertCnt++;
             } else {
                 logger.info("Record of transaction #{} already exists.", txInfo.getHash());
@@ -94,7 +94,7 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
         customTransaction.setTxType("");                            // to be done
         customTransaction.setNonce(txInfo.getNonce());
         customTransaction.setTxIndex(txInfo.getTransactionIndex());
-        customTransaction.setInputData(txInfo.getInput());
+        // customTransaction.setInputData(txInfo.getInput());
         customTransaction.setPrivateNote("");                       // to be done
         customTransaction.setBlockHash(txInfo.getBlockHash());
         customTransaction.setR(txInfo.getR());

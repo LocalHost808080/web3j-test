@@ -96,8 +96,8 @@ public class CustomTransaction implements Serializable {
     @ApiModelProperty(value = "交易序号（在区块中）")
     private BigInteger txIndex;
 
-    @ApiModelProperty(value = "交易额外数据")
-    private String inputData;
+    // @ApiModelProperty(value = "交易额外数据")
+    // private String inputData;
 
     private String privateNote;
 

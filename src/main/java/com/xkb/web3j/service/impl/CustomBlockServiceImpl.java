@@ -62,7 +62,7 @@ public class CustomBlockServiceImpl extends ServiceImpl<CustomBlockMapper, Custo
         customBlock.setTxCount(block.getTransactions().size());
         customBlock.setMiner(block.getMiner());
         customBlock.setBlockReward(new BigDecimal(0));      // to be done
-        customBlock.setTotalDifficulty(block.getTotalDifficultyRaw());
+        customBlock.setTotalDifficulty(block.getTotalDifficulty());
         customBlock.setSize(block.getSize());
         customBlock.setGasUsed(block.getGasUsed());
         customBlock.setGasLimit(block.getGasLimit());

@@ -1,3 +1,11 @@
 ### 获取最新的区块和相应的全部交易信息并保存到 MySQL
-GET http://localhost:8081/infoCollect/latestBlkAndTrx
+GET http://localhost:8081/collectBlkAndTx/latestBlock
+Accept: application/json
+
+### 获取某个时间点之后所有的区块和相应的全部交易信息并保存到 MySQL
+GET http://localhost:8081/collectBlkAndTx/afterAppointedTime
+Accept: application/json
+
+### 获取指定序号的区块和相应的全部交易信息并保存到 MySQL
+GET http://localhost:8081/collectBlkAndTx/byBlockNumber?blockNumber=15000000
 Accept: application/json
