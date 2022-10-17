@@ -142,7 +142,7 @@ public class InfoCollectController {
 
         // Todo: Save the block and transaction info into the database
         int saveBlockCnt = customBlockService.saveBlockInfo(blockInfo);
-        logger.info("Info of {} block(s) is saved.", saveBlockCnt);
+        logger.info("Info of {} block is saved.", saveBlockCnt);
 
         int saveTxCnt = customTransactionService.saveTransactionInfo(txInfos);
         logger.info("Info of {} transactions is saved.", saveTxCnt);

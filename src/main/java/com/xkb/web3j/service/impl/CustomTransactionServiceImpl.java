@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
@@ -18,7 +17,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * <p>
@@ -32,9 +30,6 @@ import java.util.Optional;
 public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionMapper, CustomTransaction> implements CustomTransactionService {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomTransactionServiceImpl.class);
-
-    @Autowired
-    private Web3j web3j;
 
     @Autowired
     private CustomTransactionMapper customTransactionMapper;
