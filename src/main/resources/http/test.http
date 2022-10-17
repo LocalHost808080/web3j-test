@@ -1,0 +1,6 @@
+### SQL Test
+GET http://localhost:8081/test/sqlTest
+Accept: application/json
+
+
+

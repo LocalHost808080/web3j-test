@@ -1,6 +1,7 @@
 package com.xkb.web3j.controller;
 
 import com.google.gson.Gson;
+import com.xkb.web3j.service.BlockChainDataService;
 import com.xkb.web3j.service.CustomBlockService;
 import com.xkb.web3j.service.CustomTransactionService;
 import org.slf4j.Logger;
@@ -10,10 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.EthBlock;
-import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.Transaction;
 
 import java.math.BigInteger;
@@ -25,12 +23,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/collectBlkAndTx")
-public class InfoCollectController {
+public class DataCollectController {
 
-    private static final Logger logger = LoggerFactory.getLogger(InfoCollectController.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataCollectController.class);
 
     @Autowired
-    private Web3j web3j;
+    private BlockChainDataService blockChainDataService;
 
     @Autowired
     private CustomBlockService customBlockService;
@@ -45,15 +43,11 @@ public class InfoCollectController {
      * @date 2022/10/11 19:20
      */
     @GetMapping("/latestBlock")
-    public String collectLatestInfo() throws Exception {
+    public String collectLatestData() throws Exception {
 
-        // Todo: Get the latest blockNumber
-        EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
-        BigInteger latestBlockNumber = ethBlockNumber.getBlockNumber();
+        BigInteger latestBlockNumber = blockChainDataService.getLatestBlockNumber();
         logger.info("Latest block number: #{}", latestBlockNumber);
-
-        // Todo: Get the latest block info and tx infos by blockNumber
-        collectInfoByBlockNumber(latestBlockNumber);
+        collectDataByBlockNumber(latestBlockNumber);
 
         return "Success";
     }
@@ -65,11 +59,10 @@ public class InfoCollectController {
      * @date 2022/10/13 20:20
      */
     @GetMapping("/afterAppointedTime")
-    public String collectInfoAfterAppointedTime() throws Exception {
+    public String collectDataAfterAppointedTime() throws Exception {
 
         // Todo: Get the latest blockNumber
-        EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
-        BigInteger latestBlockNumber = ethBlockNumber.getBlockNumber();
+        BigInteger latestBlockNumber = blockChainDataService.getLatestBlockNumber();
         logger.info("Latest block number: #{}", latestBlockNumber);
 
         // Todo: Get target timestamp
@@ -85,9 +78,7 @@ public class InfoCollectController {
         while (l.compareTo(r) <= 0) {
             BigInteger midBlockNumber = l.add(r).divide(new BigInteger("2"));
             logger.info("midBlockNumber: {}", midBlockNumber);
-            DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(midBlockNumber);
-            EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber, true).sendAsync().get();
-            BigInteger midTimestamp = ethBlock.getBlock().getTimestamp();
+            BigInteger midTimestamp = blockChainDataService.getBlockInfoByBlockNumber(midBlockNumber).getTimestamp();
 
             if (midTimestamp.compareTo(targetTimestamp) < 0)
                 l = midBlockNumber.add(BigInteger.valueOf(1));
@@ -105,7 +96,29 @@ public class InfoCollectController {
              i = i.add(BigInteger.valueOf(1))) {  // "i =" 不要忘记，否则 i 的值没有被改变，会进入死循环
 
             System.out.println("i = " + i);
-            collectInfoByBlockNumber(i);
+            collectDataByBlockNumber(i);
+        }
+
+        return "Success";
+    }
+
+    /**
+     * @return String
+     * @description 获取两个区块号之间（包含左右边界）所有的区块和相应的全部交易信息并保存到 MySQL
+     * @author xkb
+     * @date 2022/10/17
+     */
+    @GetMapping("/betweenTwoBlockNumbers")
+    public String collectDataBtwTwoBlkNum(
+            @RequestParam(value = "blockNumber1") BigInteger blockNumber1,
+            @RequestParam(value = "blockNumber2") BigInteger blockNumber2) throws Exception {
+
+        for (BigInteger i = blockNumber1;
+             i.compareTo(blockNumber2) <= 0;
+             i = i.add(BigInteger.valueOf(1))) {      // "i =" 不要忘记，否则 i 的值没有被改变，会进入死循环
+
+            System.out.println("i = " + i);
+            collectDataByBlockNumber(i);
         }
 
         return "Success";
@@ -118,19 +131,17 @@ public class InfoCollectController {
      * @date 2022/10/13 22:00
      */
     @GetMapping("/byBlockNumber")
-    public String collectInfoByBlockNumber(
+    public String collectDataByBlockNumber(
             @RequestParam(value = "blockNumber") BigInteger blockNumber) throws Exception {
 
         // Todo: Get the block info by blockNumber
-        DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
-        EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber, true).sendAsync().get();
-        EthBlock.Block blockInfo = ethBlock.getBlock();
+        EthBlock.Block blockInfo = blockChainDataService.getBlockInfoByBlockNumber(blockNumber);
         Gson gson = new Gson();
         String info = gson.toJson(blockInfo);
         logger.info("Info of block #{}: {}", blockNumber, info);
 
         // Todo: Get the txInfos in the block by blockNumber
-        List<EthBlock.TransactionResult> transactionResults = ethBlock.getBlock().getTransactions();
+        List<EthBlock.TransactionResult> transactionResults = blockInfo.getTransactions();
         List<Transaction> txInfos = new ArrayList<>();
 
         transactionResults.forEach(txInfo -> {

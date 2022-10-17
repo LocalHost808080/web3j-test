@@ -1,6 +1,6 @@
 package com.xkb.web3j.service.impl;
 
-import com.xkb.web3j.service.BlockChainInfoService;
+import com.xkb.web3j.service.BlockChainDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BlockChainInfoServiceImpl implements BlockChainInfoService {
+public class BlockChainDataServiceImpl implements BlockChainDataService {
 
-    private static final Logger logger = LoggerFactory.getLogger(BlockChainInfoServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BlockChainDataServiceImpl.class);
 
     @Autowired
     private Web3j web3j;
@@ -54,14 +54,14 @@ public class BlockChainInfoServiceImpl implements BlockChainInfoService {
     }
 
     @Override
-    public EthBlock.Block getAll(Long blockNumber) throws Exception {
+    public EthBlock.Block getBlockInfoByBlockNumber(BigInteger blockNumber) throws Exception {
         DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
         EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber, true).sendAsync().get();
         return ethBlock.getBlock();
     }
 
     @Override
-    public List<Transaction> getTransactionInfoByBlockNumber(Long blockNumber) throws Exception {
+    public List<Transaction> getTransactionInfoByBlockNumber(BigInteger blockNumber) throws Exception {
 
         DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNumber);
         EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber, true).sendAsync().get();

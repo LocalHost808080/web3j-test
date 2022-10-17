@@ -7,7 +7,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import java.math.BigInteger;
 import java.util.List;
 
-public interface BlockChainInfoService {
+public interface BlockChainDataService {
 
     BigInteger getLatestBlockNumber() throws Exception;
 
@@ -19,9 +19,9 @@ public interface BlockChainInfoService {
 
     String getCoinBase() throws Exception;
 
-    EthBlock.Block getAll(Long blockNumber) throws Exception;
+    EthBlock.Block getBlockInfoByBlockNumber(BigInteger blockNumber) throws Exception;
 
-    List<Transaction> getTransactionInfoByBlockNumber(Long blockNumber) throws Exception;
+    List<Transaction> getTransactionInfoByBlockNumber(BigInteger blockNumber) throws Exception;
 
     Transaction getTransactionInfoByHash(String txHash) throws Exception;
 

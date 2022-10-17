@@ -1,7 +1,7 @@
 package com.xkb.web3j.controller;
 
 import com.google.gson.Gson;
-import com.xkb.web3j.service.BlockChainInfoService;
+import com.xkb.web3j.service.BlockChainDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,13 @@ import java.util.List;
  * @date 2022/6/22 21:14
  */
 @RestController
-@RequestMapping("/chainInfo")
-public class BlockChainInfoController {
+@RequestMapping("/chainData")
+public class BlockChainDataController {
 
-    private static final Logger logger = LoggerFactory.getLogger(BlockChainInfoController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BlockChainDataController.class);
 
     @Autowired
-    private BlockChainInfoService blockChainInfoService;
+    private BlockChainDataService blockChainDataService;
 
     /**
      * @description 获取最新的区块号
@@ -37,7 +37,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/blockNumber")
     public BigInteger doGetLatestBlockNumber() throws Exception {
-        BigInteger blockNumber = blockChainInfoService.getLatestBlockNumber();
+        BigInteger blockNumber = blockChainDataService.getLatestBlockNumber();
         logger.info("BlockNumber: {}", blockNumber);
         return blockNumber;
     }
@@ -51,7 +51,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/accounts")
     public List<String> doGetAllAccounts() throws Exception {
-        List<String> accounts = blockChainInfoService.getAllAccounts();
+        List<String> accounts = blockChainDataService.getAllAccounts();
         logger.info("Accounts: {}", accounts);
         return accounts;
     }
@@ -65,7 +65,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/gasPrice")
     public BigInteger doGetEthGasPrice() throws Exception {
-        BigInteger gasPrice = blockChainInfoService.getEthGasPrice();
+        BigInteger gasPrice = blockChainDataService.getEthGasPrice();
         logger.info("Ethereum Gas Price: {}", gasPrice);
         return gasPrice;
     }
@@ -79,7 +79,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/chainId")
     public BigInteger doGetChainId() throws Exception {
-        BigInteger chainId = blockChainInfoService.getChainId();
+        BigInteger chainId = blockChainDataService.getChainId();
         logger.info("Ethereum Chain Id: {}", chainId);
         return chainId;
     }
@@ -93,7 +93,7 @@ public class BlockChainInfoController {
      */
     @GetMapping("/coinbase")
     public String doGetCoinBase() throws Exception {
-        String coinBase = blockChainInfoService.getCoinBase();
+        String coinBase = blockChainDataService.getCoinBase();
         logger.info("Ethereum CoinBase Address: {}", coinBase);
         return coinBase;
     }
@@ -106,8 +106,8 @@ public class BlockChainInfoController {
      * @return String
      */
     @GetMapping("/getBlockInfo")
-    public String doGetAll(@RequestParam(value = "blockNumber") Long blockNumber) throws Exception {
-        EthBlock.Block block = blockChainInfoService.getAll(blockNumber);
+    public String doGetAll(@RequestParam(value = "blockNumber") BigInteger blockNumber) throws Exception {
+        EthBlock.Block block = blockChainDataService.getBlockInfoByBlockNumber(blockNumber);
         Gson gson = new Gson();
         String info = gson.toJson(block);
         logger.info(info);
@@ -123,9 +123,9 @@ public class BlockChainInfoController {
      */
     @GetMapping("/getTransactionByBlockNumber")
     public String doGetTransactionInfoByBlockNumber(
-            @RequestParam(value="blockNumber") Long blockNumber) throws Exception {
+            @RequestParam(value="blockNumber") BigInteger blockNumber) throws Exception {
 
-        List<Transaction> txInfos = blockChainInfoService.getTransactionInfoByBlockNumber(blockNumber);
+        List<Transaction> txInfos = blockChainDataService.getTransactionInfoByBlockNumber(blockNumber);
         Gson gson = new Gson();
         String transactionInfo = gson.toJson(txInfos);
         logger.info(transactionInfo);
@@ -142,7 +142,7 @@ public class BlockChainInfoController {
     @GetMapping("/getTransactionInfoByHash")
     public String doGetTransactionInfoByHash(@RequestParam(value = "txHash") String txHash) throws Exception {
 
-        Transaction transactionInfo = blockChainInfoService.getTransactionInfoByHash(txHash);
+        Transaction transactionInfo = blockChainDataService.getTransactionInfoByHash(txHash);
         StringBuilder txInfo = new StringBuilder();
 
         if (transactionInfo != null) {
@@ -164,7 +164,7 @@ public class BlockChainInfoController {
     @GetMapping("/getTransactionReceiptByHash")
     public String doGetTransactionReceiptByHash(@RequestParam(value = "txHash") String txHash) throws Exception {
 
-        TransactionReceipt transactionReceipt = blockChainInfoService.getTransactionReceiptByHash(txHash);
+        TransactionReceipt transactionReceipt = blockChainDataService.getTransactionReceiptByHash(txHash);
         StringBuilder txRcpt = new StringBuilder();
 
         if (transactionReceipt != null) {

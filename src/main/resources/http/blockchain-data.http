@@ -1,0 +1,49 @@
+### 获取最新的区块号
+GET http://localhost:8081/chainData/blockNumber
+Accept: application/json
+
+### 获取所有账户
+GET http://localhost:8081/chainData/accounts
+Accept: application/json
+
+### 获取Gas价格
+GET http://localhost:8081/chainData/gasPrice
+Accept: application/json
+
+### 获取链Id
+GET http://localhost:8081/chainData/chainId
+Accept: application/json
+
+### 获取CoinBase
+GET http://localhost:8081/chainData/coinbase
+Accept: application/json
+
+### 根据区块号获取区块信息
+GET http://localhost:8081/chainData/getBlockInfo?blockNumber=15714799
+Accept: application/json
+
+### 根据区块号获取所有交易
+GET http://localhost:8081/chainData/getTransactionByBlockNumber?blockNumber=15714799
+Accept: application/json
+
+### 根据交易哈希值获取交易信息
+GET http://localhost:8081/chainData/getTransactionInfoByHash?txHash=0xbf69f45ed55a9405dd04021fed705b2dbb44066f4d3c91178ac8226edb04a1ed
+Accept: application/json
+
+### 根据交易哈希值获取交易回执
+GET http://localhost:8081/chainData/getTransactionReceiptByHash?txHash=0x690f828773d2ddf2a0028bbd60084a5db7275fff1353fae003a016a8ac0ed0eb
+Accept: application/json
+
+
+
+
+
+
+
+
+
+
+
+
+
+

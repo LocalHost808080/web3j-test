@@ -3,7 +3,7 @@ package com.xkb.web3j.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xkb.web3j.entity.CustomTransaction;
 import com.xkb.web3j.mapper.CustomTransactionMapper;
-import com.xkb.web3j.service.BlockChainInfoService;
+import com.xkb.web3j.service.BlockChainDataService;
 import com.xkb.web3j.service.CustomTransactionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
     private CustomTransactionMapper customTransactionMapper;
 
     @Autowired
-    private BlockChainInfoService blockChainInfoService;
+    private BlockChainDataService blockChainInfoService;
 
     @Override
     public int saveTransactionInfo(List<Transaction> txInfos) throws Exception {
