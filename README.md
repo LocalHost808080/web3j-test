@@ -1,4 +1,3 @@
 # 工程简介
 
-# 延伸阅读
-
+This project is created for web3j study. 
