@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.web3j.protocol.core.methods.response.EthBlock;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -56,8 +58,12 @@ public class CustomBlockServiceImpl extends ServiceImpl<CustomBlockMapper, Custo
 
         customBlock.setNumber(block.getNumber());
         customBlock.setStatus("");                              // to be done
+
         long blockTimestamp = Long.parseLong(block.getTimestampRaw().substring(2), 16);
-        customBlock.setTimestamp(new Date(blockTimestamp * 1000L));
+        Instant instant = Instant.ofEpochSecond(blockTimestamp);
+        ZoneId zone = ZoneId.systemDefault();
+        customBlock.setTimestamp(LocalDateTime.ofInstant(instant, zone));
+
         customBlock.setProposedOn("");                          // to be done
         customBlock.setTxCount(block.getTransactions().size());
         customBlock.setMiner(block.getMiner());
@@ -79,7 +85,7 @@ public class CustomBlockServiceImpl extends ServiceImpl<CustomBlockMapper, Custo
         customBlock.setReceiptsRoot(block.getReceiptsRoot());
         customBlock.setMixHash(block.getMixHash());
         customBlock.setDifficulty(block.getDifficulty());
-        customBlock.setCreateTime(new Date());
+        customBlock.setCreateTime(LocalDateTime.now());
 
         return customBlock;
     }

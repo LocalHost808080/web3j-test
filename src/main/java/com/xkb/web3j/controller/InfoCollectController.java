@@ -17,9 +17,10 @@ import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.Transaction;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -72,12 +73,12 @@ public class InfoCollectController {
         logger.info("Latest block number: #{}", latestBlockNumber);
 
         // Todo: Get target timestamp
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2022, Calendar.OCTOBER, 13, 22, 54, 0);   // 月份写 10 的话实际上是指 11 月
-        Date targetTime = calendar.getTime();
-        BigInteger targetTimestamp = BigInteger.valueOf(targetTime.getTime() / 1000L);    // 1664553600L;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime targetDateTime = LocalDateTime.parse("2022-10-17 15:24:00", dtf);
+        BigInteger targetTimestamp = BigInteger.valueOf(
+                targetDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() / 1000L);
 
-        // Todo: Binary search, get the first blockNumber on 2022.10.01
+        // Todo: Binary search, get the first blockNumber after the appointed timestamp
         BigInteger l = new BigInteger("0");
         BigInteger r = latestBlockNumber;
 

@@ -15,7 +15,8 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 
 /**
@@ -69,7 +70,7 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
         customTransaction.setHash(txInfo.getHash());
         customTransaction.setStatus(txRcpt.getStatus());
         customTransaction.setBlockNumber(txInfo.getBlockNumber());
-        customTransaction.setTimestamp(new Date(0L));               // to be done
+        customTransaction.setTimestamp(LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0, 0));          // to be done
         customTransaction.setFromAccount(txInfo.getFrom());
         customTransaction.setToAccount(txInfo.getTo());
         customTransaction.setValue(new BigDecimal(txInfo.getValue())
@@ -96,7 +97,7 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
         customTransaction.setS(txInfo.getS());
         customTransaction.setCumulativeGasUsed(txRcpt.getCumulativeGasUsed());
         customTransaction.setLogsBloom(txRcpt.getLogsBloom());
-        customTransaction.setCreateTime(new Date());
+        customTransaction.setCreateTime(LocalDateTime.now());
 
         return customTransaction;
     }

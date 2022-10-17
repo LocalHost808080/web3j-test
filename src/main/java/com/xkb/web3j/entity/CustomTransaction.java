@@ -46,7 +46,7 @@ public class CustomTransaction implements Serializable {
     private BigInteger blockNumber;
 
     @ApiModelProperty(value = "时间戳")
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
     @ApiModelProperty(value = "交易发起账号")
     private String fromAccount;
@@ -115,7 +115,5 @@ public class CustomTransaction implements Serializable {
     private String logsBloom;
 
     @ApiModelProperty(value = "创建时间")
-    private Date createTime;
-
-
+    private LocalDateTime createTime;
 }

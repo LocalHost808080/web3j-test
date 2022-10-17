@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.math.BigInteger;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
@@ -42,7 +43,7 @@ public class CustomBlock implements Serializable {
     private String status;
 
     @ApiModelProperty(value = "时间戳")
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
     @ApiModelProperty(value = "该区块所基于的 slot 和 epoch")
     private String proposedOn;
@@ -108,7 +109,5 @@ public class CustomBlock implements Serializable {
     private BigInteger difficulty;
 
     @ApiModelProperty(value = "创建时间")
-    private Date createTime;
-
-
+    private LocalDateTime createTime;
 }
