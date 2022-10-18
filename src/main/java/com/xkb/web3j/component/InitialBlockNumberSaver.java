@@ -27,6 +27,6 @@ public class InitialBlockNumberSaver implements ApplicationRunner {
 
         BigInteger latestBlockNumber = blockChainDataService.getLatestBlockNumber();
         latestBlockNumberService.saveLatest(latestBlockNumber);
-        logger.info("Save latest blockNumber #{} in Redis.", latestBlockNumber);
+        logger.info("Save latest blockNumber 【#{}】 in Redis.", latestBlockNumber);
     }
 }

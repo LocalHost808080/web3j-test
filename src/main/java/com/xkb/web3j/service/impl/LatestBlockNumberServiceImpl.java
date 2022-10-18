@@ -21,10 +21,6 @@ public class LatestBlockNumberServiceImpl implements LatestBlockNumberService {
 
     @Override
     public void saveLatest(BigInteger latestBlockNumber) {
-
-        // if (redisService.get(REDIS_KEY) != null)
-        //     redisService.remove(REDIS_KEY);
-
         redisService.set(REDIS_KEY, latestBlockNumber.toString(10));
     }
 
@@ -32,9 +28,4 @@ public class LatestBlockNumberServiceImpl implements LatestBlockNumberService {
     public BigInteger getLast() {
         return new BigInteger(redisService.get(REDIS_KEY));
     }
-
-    // @Override
-    // public void updateLatest(BigInteger latestBlockNumber) {
-    //     redisService.set(REDIS_KEY, latestBlockNumber.toString(10));
-    // }
 }

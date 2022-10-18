@@ -36,7 +36,10 @@ public class DataSyncTimedTask {
         BigInteger startBlockNumber = latestBlockNumberService.getLast().add(BigInteger.valueOf(1));
         BigInteger latestBlockNumber = blockChainDataService.getLatestBlockNumber();
 
-        logger.info("Start to collect data from blocks #{} to #{}", startBlockNumber, latestBlockNumber);
+        latestBlockNumberService.saveLatest(latestBlockNumber);
+        logger.info("Save latest blockNumber 【#{}】 in Redis.", latestBlockNumber);
+
+        logger.info("Start to collect data from blocks 【#{}】 to 【#{}】", startBlockNumber, latestBlockNumber);
         dataCollectController.collectDataBtwTwoBlkNum(startBlockNumber, latestBlockNumber);
     }
 }

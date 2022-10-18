@@ -41,12 +41,12 @@ public class CustomBlockServiceImpl extends ServiceImpl<CustomBlockMapper, Custo
         List<CustomBlock> customBlockList = customBlockMapper.selectList(wrapper);
 
         if (customBlockList.size() > 0) {
-            logger.info("Record of block #{} already exists.", blockInfo.getNumber());
+            // logger.info("Record of block 【#{}】 already exists.", blockInfo.getNumber());
             return 0;
         } else {
-            CustomBlock customBlock = convertBlockToCustom(blockInfo);
+            CustomBlock customBlock = this.convertBlockToCustom(blockInfo);
             customBlockMapper.insert(customBlock);
-            logger.info("Info of block #{} is saved.", blockInfo.getNumber());
+            // logger.info("Info of block 【#{}】 is saved.", blockInfo.getNumber());
             return 1;
         }
     }

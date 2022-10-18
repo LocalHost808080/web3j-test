@@ -14,6 +14,7 @@ import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -49,12 +50,12 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
             List<CustomTransaction> customTransactionList = customTransactionMapper.selectList(wrapper);
 
             if (customTransactionList.size() == 0) {
-                CustomTransaction customTransaction = convertTransactionToCustom(txInfo);
+                CustomTransaction customTransaction = this.convertTransactionToCustom(txInfo);
                 customTransactionMapper.insert(customTransaction);
-                // logger.info("Info of transaction #{} is saved.", txInfo.getHash());
+                // logger.info("Info of transaction 【#{}】 is saved.", txInfo.getHash());
                 insertCnt++;
             } else {
-                logger.info("Record of transaction #{} already exists.", txInfo.getHash());
+                // logger.info("Record of transaction 【#{}】 already exists.", txInfo.getHash());
             }
         }
 
@@ -65,23 +66,32 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
     public CustomTransaction convertTransactionToCustom(Transaction txInfo) throws Exception {
 
         CustomTransaction customTransaction = new CustomTransaction();
-        TransactionReceipt txRcpt = blockChainInfoService.getTransactionReceiptByHash(txInfo.getHash());
+        // TransactionReceipt txRcpt = blockChainInfoService.getTransactionReceiptByHash(txInfo.getHash());
 
         customTransaction.setHash(txInfo.getHash());
-        customTransaction.setStatus(txRcpt.getStatus());
+
+        // customTransaction.setStatus(txRcpt.getStatus());
+        customTransaction.setStatus("");
+
         customTransaction.setBlockNumber(txInfo.getBlockNumber());
         customTransaction.setTimestamp(LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0, 0));          // to be done
         customTransaction.setFromAccount(txInfo.getFrom());
         customTransaction.setToAccount(txInfo.getTo());
         customTransaction.setValue(new BigDecimal(txInfo.getValue())
                 .divide(new BigDecimal(10).pow(18), 18, RoundingMode.DOWN));
-        customTransaction.setTxFee(new BigDecimal(txInfo.getGasPrice().multiply(txRcpt.getGasUsed()))
-                .divide(new BigDecimal(10).pow(18), 18, RoundingMode.DOWN));
+
+        // customTransaction.setTxFee(new BigDecimal(txInfo.getGasPrice().multiply(txRcpt.getGasUsed()))
+        //         .divide(new BigDecimal(10).pow(18), 18, RoundingMode.DOWN));
+        customTransaction.setTxFee(new BigDecimal(0));
+
         customTransaction.setGasPrice(new BigDecimal(txInfo.getGasPrice())
                 .divide(new BigDecimal(10).pow(18), 18, RoundingMode.DOWN));
         customTransaction.setEtherPrice(new BigDecimal(0));     // to be done
         customTransaction.setGasLimit(txInfo.getGas());
-        customTransaction.setGasUsed(txRcpt.getGasUsed());
+
+        // customTransaction.setGasUsed(txRcpt.getGasUsed());
+        customTransaction.setGasUsed(new BigInteger(String.valueOf(0)));
+
         customTransaction.setGasFeesBase(new BigDecimal(0));    // to be done
         customTransaction.setGasFeesMax(new BigDecimal(0));     // to be done
         customTransaction.setGasFeesMaxPri(new BigDecimal(0));  // to be done
@@ -95,8 +105,13 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
         customTransaction.setBlockHash(txInfo.getBlockHash());
         customTransaction.setR(txInfo.getR());
         customTransaction.setS(txInfo.getS());
-        customTransaction.setCumulativeGasUsed(txRcpt.getCumulativeGasUsed());
-        customTransaction.setLogsBloom(txRcpt.getLogsBloom());
+
+        // customTransaction.setCumulativeGasUsed(txRcpt.getCumulativeGasUsed());
+        customTransaction.setCumulativeGasUsed(new BigInteger(String.valueOf(0)));
+
+        // customTransaction.setLogsBloom(txRcpt.getLogsBloom());
+        customTransaction.setLogsBloom("");
+
         customTransaction.setCreateTime(LocalDateTime.now());
 
         return customTransaction;

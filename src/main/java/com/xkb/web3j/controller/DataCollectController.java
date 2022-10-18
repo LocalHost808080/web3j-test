@@ -95,7 +95,7 @@ public class DataCollectController {
              i.compareTo(latestBlockNumber) <= 0;
              i = i.add(BigInteger.valueOf(1))) {  // "i =" 不要忘记，否则 i 的值没有被改变，会进入死循环
 
-            System.out.println("i = " + i);
+            // System.out.println("i = " + i);
             collectDataByBlockNumber(i);
         }
 
@@ -117,7 +117,7 @@ public class DataCollectController {
              i.compareTo(blockNumber2) <= 0;
              i = i.add(BigInteger.valueOf(1))) {      // "i =" 不要忘记，否则 i 的值没有被改变，会进入死循环
 
-            System.out.println("i = " + i);
+            // System.out.println("i = " + i);
             collectDataByBlockNumber(i);
         }
 
@@ -136,11 +136,12 @@ public class DataCollectController {
 
         // Todo: Get the block info by blockNumber
         EthBlock.Block blockInfo = blockChainDataService.getBlockInfoByBlockNumber(blockNumber);
-        Gson gson = new Gson();
-        String info = gson.toJson(blockInfo);
-        logger.info("Info of block #{}: {}", blockNumber, info);
+        // Gson gson = new Gson();
+        // String info = gson.toJson(blockInfo);
+        // logger.info("Info of block #{}: {}", blockNumber, info);
 
         // Todo: Get the txInfos in the block by blockNumber
+        // List<Transaction> txInfos = blockChainDataService.getTransactionInfoByBlockNumber(blockNumber);
         List<EthBlock.TransactionResult> transactionResults = blockInfo.getTransactions();
         List<Transaction> txInfos = new ArrayList<>();
 
@@ -149,15 +150,15 @@ public class DataCollectController {
             txInfos.add(transaction);
         });
 
-        String transactionInfo = gson.toJson(txInfos);
-        logger.info("Transactions in the block #{}: {}", blockNumber, transactionInfo);
+        // String transactionInfo = gson.toJson(txInfos);
+        // logger.info("Transactions in the block #{}: {}", blockNumber, transactionInfo);
 
         // Todo: Save the block and transaction info into the database
         int saveBlockCnt = customBlockService.saveBlockInfo(blockInfo);
-        logger.info("Info of {} block is saved.", saveBlockCnt);
+        logger.info("【#{}】: Info of {} block is saved.", blockNumber, saveBlockCnt);
 
         int saveTxCnt = customTransactionService.saveTransactionInfo(txInfos);
-        logger.info("Info of {} transactions is saved.", saveTxCnt);
+        logger.info("【#{}】: Info of {} transactions is saved.", blockNumber, saveTxCnt);
 
         return "Success";
     }

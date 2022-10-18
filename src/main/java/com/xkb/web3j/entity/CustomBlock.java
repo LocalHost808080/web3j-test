@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.math.BigInteger;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
