@@ -66,12 +66,12 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
     public CustomTransaction convertTransactionToCustom(Transaction txInfo) throws Exception {
 
         CustomTransaction customTransaction = new CustomTransaction();
-        // TransactionReceipt txRcpt = blockChainInfoService.getTransactionReceiptByHash(txInfo.getHash());
+        TransactionReceipt txRcpt = blockChainInfoService.getTransactionReceiptByHash(txInfo.getHash());
 
         customTransaction.setHash(txInfo.getHash());
 
-        // customTransaction.setStatus(txRcpt.getStatus());
-        customTransaction.setStatus("");
+        customTransaction.setStatus(txRcpt.getStatus());
+        // customTransaction.setStatus("");
 
         customTransaction.setBlockNumber(txInfo.getBlockNumber());
         customTransaction.setTimestamp(LocalDateTime.of(1970, Month.JANUARY, 1, 0, 0, 0));          // to be done
@@ -80,17 +80,17 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
         customTransaction.setValue(new BigDecimal(txInfo.getValue())
                 .divide(new BigDecimal(10).pow(18), 18, RoundingMode.DOWN));
 
-        // customTransaction.setTxFee(new BigDecimal(txInfo.getGasPrice().multiply(txRcpt.getGasUsed()))
-        //         .divide(new BigDecimal(10).pow(18), 18, RoundingMode.DOWN));
-        customTransaction.setTxFee(new BigDecimal(0));
+        customTransaction.setTxFee(new BigDecimal(txInfo.getGasPrice().multiply(txRcpt.getGasUsed()))
+                .divide(new BigDecimal(10).pow(18), 18, RoundingMode.DOWN));
+        // customTransaction.setTxFee(new BigDecimal(0));
 
         customTransaction.setGasPrice(new BigDecimal(txInfo.getGasPrice())
                 .divide(new BigDecimal(10).pow(18), 18, RoundingMode.DOWN));
         customTransaction.setEtherPrice(new BigDecimal(0));     // to be done
         customTransaction.setGasLimit(txInfo.getGas());
 
-        // customTransaction.setGasUsed(txRcpt.getGasUsed());
-        customTransaction.setGasUsed(new BigInteger(String.valueOf(0)));
+        customTransaction.setGasUsed(txRcpt.getGasUsed());
+        // customTransaction.setGasUsed(new BigInteger(String.valueOf(0)));
 
         customTransaction.setGasFeesBase(new BigDecimal(0));    // to be done
         customTransaction.setGasFeesMax(new BigDecimal(0));     // to be done
@@ -106,11 +106,11 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
         customTransaction.setR(txInfo.getR());
         customTransaction.setS(txInfo.getS());
 
-        // customTransaction.setCumulativeGasUsed(txRcpt.getCumulativeGasUsed());
-        customTransaction.setCumulativeGasUsed(new BigInteger(String.valueOf(0)));
+        customTransaction.setCumulativeGasUsed(txRcpt.getCumulativeGasUsed());
+        // customTransaction.setCumulativeGasUsed(new BigInteger(String.valueOf(0)));
 
-        // customTransaction.setLogsBloom(txRcpt.getLogsBloom());
-        customTransaction.setLogsBloom("");
+        customTransaction.setLogsBloom(txRcpt.getLogsBloom());
+        // customTransaction.setLogsBloom("");
 
         customTransaction.setCreateTime(LocalDateTime.now());
 

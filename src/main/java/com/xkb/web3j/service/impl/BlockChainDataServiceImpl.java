@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.*;
@@ -86,7 +85,7 @@ public class BlockChainDataServiceImpl implements BlockChainDataService {
     }
 
     @Override
-    public TransactionReceipt getTransactionReceiptByHash(@RequestParam(value = "txHash") String txHash) throws Exception {
+    public TransactionReceipt getTransactionReceiptByHash(String txHash) throws Exception {
 
         EthGetTransactionReceipt getTransactionReceipt = web3j.ethGetTransactionReceipt(txHash).sendAsync().get();
         Optional<TransactionReceipt> optionalTransactionReceipt = getTransactionReceipt.getTransactionReceipt();
