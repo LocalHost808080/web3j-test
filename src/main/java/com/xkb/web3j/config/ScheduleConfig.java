@@ -10,8 +10,8 @@ public class ScheduleConfig {
     @Bean
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
-        // 设置线程数量为 50
-        taskScheduler.setPoolSize(50);
+        // 设置线程数量为 10
+        taskScheduler.setPoolSize(10);
         return taskScheduler;
     }
 }

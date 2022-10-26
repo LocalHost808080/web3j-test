@@ -158,7 +158,8 @@ public class DataCollectController {
         logger.info("【#{}】: Info of {} block is saved.", blockNumber, saveBlockCnt);
 
         int saveTxCnt = customTransactionService.saveTransactionInfo(txInfos);
-        logger.info("【#{}】: Info of {} transactions is saved.", blockNumber, saveTxCnt);
+        // logger.info("【#{}】: Info of {} transactions is saved.", blockNumber, saveTxCnt);
+        logger.info("【#{}】: Info of {} transactions is being saved.", blockNumber, saveTxCnt);
 
         return "Success";
     }
