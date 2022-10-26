@@ -6,6 +6,7 @@ import com.xkb.web3j.mapper.CustomTransactionMapper;
 import com.xkb.web3j.service.BlockChainDataService;
 import com.xkb.web3j.service.CustomTransactionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xkb.web3j.service.CustomTransferService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
     @Autowired
     private BlockChainDataService blockChainInfoService;
 
+    @Autowired
+    private CustomTransferService customTransferService;
+
     @Override
     public int saveTransactionInfo(List<Transaction> txInfos) throws Exception {
 
@@ -54,7 +58,7 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
                 customTransactionMapper.insert(customTransaction);
                 // logger.info("Info of transaction 【#{}】 is saved.", txInfo.getHash());
                 insertCnt++;
-            } else {
+            // } else {
                 // logger.info("Record of transaction 【#{}】 already exists.", txInfo.getHash());
             }
         }
@@ -67,6 +71,8 @@ public class CustomTransactionServiceImpl extends ServiceImpl<CustomTransactionM
 
         CustomTransaction customTransaction = new CustomTransaction();
         TransactionReceipt txRcpt = blockChainInfoService.getTransactionReceiptByHash(txInfo.getHash());
+
+        customTransferService.saveErc20TokenTransferInfo(txRcpt);
 
         customTransaction.setHash(txInfo.getHash());
 

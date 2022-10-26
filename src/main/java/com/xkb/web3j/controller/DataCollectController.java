@@ -153,7 +153,7 @@ public class DataCollectController {
         // String transactionInfo = gson.toJson(txInfos);
         // logger.info("Transactions in the block #{}: {}", blockNumber, transactionInfo);
 
-        // Todo: Save the block and transaction info into the database
+        // Todo: Save the block, transaction, ERC20 transfer info into the database
         int saveBlockCnt = customBlockService.saveBlockInfo(blockInfo);
         logger.info("【#{}】: Info of {} block is saved.", blockNumber, saveBlockCnt);
 
