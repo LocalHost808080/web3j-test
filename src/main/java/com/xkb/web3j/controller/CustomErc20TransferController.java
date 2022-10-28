@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author XKB
- * @since 2022-10-25
+ * @since 2022-10-28
  */
 @RestController
-@RequestMapping("/custom-transfer")
-public class CustomTransferController {
+@RequestMapping("/custom-erc20-transfer")
+public class CustomErc20TransferController {
 
 }
