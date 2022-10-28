@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigInteger;
 
 
-@Component
+// @Component
 public class DataSyncTimedTask {
 
     private static final Logger logger = LoggerFactory.getLogger(DataSyncTimedTask.class);

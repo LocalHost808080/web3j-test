@@ -27,13 +27,15 @@ GET http://localhost:8081/chainData/getTransactionByBlockNumber?blockNumber=1571
 Accept: application/json
 
 ### 根据交易哈希值获取交易信息
-GET http://localhost:8081/chainData/getTransactionInfoByHash?txHash=0xbf69f45ed55a9405dd04021fed705b2dbb44066f4d3c91178ac8226edb04a1ed
+# GET http://localhost:8081/chainData/getTransactionInfoByHash?txHash=0xebc9683ff37b4bb5fec849cc95681dea18d6fcfce6e9c88554d06a25e0ecfdaa
+# GET http://localhost:8081/chainData/getTransactionInfoByHash?txHash=0x9876ea63adf0a0c4880c09231dd030a0a80f7aa3004f0d325d1c2da3d1bac4d1
+GET http://localhost:8081/chainData/getTransactionInfoByHash?txHash=0xe3e9323a7d9287cc1e934790470a9f83f9866acdca0d08cf8b857b9a90057cf0
 Accept: application/json
 
 ### 根据交易哈希值获取交易回执
-#GET http://localhost:8081/chainData/getTransactionReceiptByHash?txHash=0x690f828773d2ddf2a0028bbd60084a5db7275fff1353fae003a016a8ac0ed0eb
-#GET http://localhost:8081/chainData/getTransactionReceiptByHash?txHash=0xe3577e9ca406cd0f14646539d14b22885e7325003259f6723ca0aee4fd1d6048
-GET http://localhost:8081/chainData/getTransactionReceiptByHash?txHash=0x256e7cae6a59235ce2938c54073e16a98dd553ab5263552700255b20a8148923
+# GET http://localhost:8081/chainData/getTransactionReceiptByHash?txHash=0xebc9683ff37b4bb5fec849cc95681dea18d6fcfce6e9c88554d06a25e0ecfdaa
+# GET http://localhost:8081/chainData/getTransactionReceiptByHash?txHash=0x9876ea63adf0a0c4880c09231dd030a0a80f7aa3004f0d325d1c2da3d1bac4d1
+GET http://localhost:8081/chainData/getTransactionReceiptByHash?txHash=0xe3e9323a7d9287cc1e934790470a9f83f9866acdca0d08cf8b857b9a90057cf0
 Accept: application/json
 
 

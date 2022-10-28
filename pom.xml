@@ -137,6 +137,14 @@
       <scope>runtime</scope>
       <optional>true</optional>
     </dependency>
+
+    <!-- Python -->
+    <dependency>
+      <groupId>org.python</groupId>
+      <artifactId>jython-standalone</artifactId>
+      <!--python版本是2.x还是3.x在这里指定-->
+      <version>2.7.3</version>
+    </dependency>
   </dependencies>
 
   <dependencyManagement>
