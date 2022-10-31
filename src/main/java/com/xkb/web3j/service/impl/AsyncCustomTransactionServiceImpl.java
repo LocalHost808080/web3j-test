@@ -25,6 +25,10 @@ public class AsyncCustomTransactionServiceImpl implements AsyncCustomTransaction
 
     private static final String TRANSFER_HASH = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 
+    private static final String TRANSFER_SINGLE_HASH = "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62";
+
+    private static final String TRANSFER_BATCH_HASH = "0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb";
+
     @Autowired
     private CustomTransactionMapper customTransactionMapper;
 
@@ -106,8 +110,9 @@ public class AsyncCustomTransactionServiceImpl implements AsyncCustomTransaction
                 customErc20TransferService.saveErc20TransferInfo(log);
             else if ("0x".equals(log.getData()) && topics.size() == 4 && TRANSFER_HASH.equals(topics.get(0)))
                 customErc721TransferService.saveErc721TransferInfo(log);
-            else if ((!"0x".equals(log.getData())) && topics.size() == 4)
-                customErc721TransferService.saveErc721TransferInfo(log);
+            else if ((!"0x".equals(log.getData())) && topics.size() == 4
+                    && (TRANSFER_SINGLE_HASH.equals(topics.get(0)) || TRANSFER_BATCH_HASH.equals(topics.get(0))))
+                customErc1155TransferService.saveErc1155TransferInfo(log);
         }
     }
 }

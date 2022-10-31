@@ -7,9 +7,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.core.methods.response.Log;
-import org.web3j.utils.Numeric;
-
-import java.math.BigInteger;
 
 /**
  * <p>
@@ -38,8 +35,8 @@ public class CustomErc1155TransferServiceImpl extends ServiceImpl<CustomErc1155T
         customErc1155Transfer.setOperator("0x" + log.getTopics().get(1).substring(26));
         String data = log.getData();
         int midIndex = data.length() / 2 + 1;
-        customErc1155Transfer.setTokenIds(hexStr2decArr(data.substring(0, midIndex)));
-        customErc1155Transfer.setTokenValues(hexStr2decArr(data.substring(midIndex)));
+        customErc1155Transfer.setTokenIds(formatter(data.substring(2, midIndex)));
+        customErc1155Transfer.setTokenValues(formatter(data.substring(midIndex)));
 
         customErc1155Transfer.setTxHash(log.getTransactionHash());
         customErc1155Transfer.setTxIndex(log.getTransactionIndex());
@@ -49,19 +46,20 @@ public class CustomErc1155TransferServiceImpl extends ServiceImpl<CustomErc1155T
         customErc1155TransferMapper.insert(customErc1155Transfer);
     }
 
-    private String hexStr2decArr(String hexStr) {
+    private String formatter(String str) {
 
-        StringBuilder decArr = new StringBuilder("[");
-        int cnt = hexStr.length() / DATA_HEX_LEN;
+        StringBuilder res = new StringBuilder("[");
+        int cnt = str.length() / DATA_HEX_LEN;
 
         for (int i = 0; i < cnt; i++) {
-            String hex = "0x" + hexStr.substring(DATA_HEX_LEN * i, DATA_HEX_LEN * (i + 1));
-            decArr.append(Numeric.decodeQuantity(hex));
+            String hex = "0x" + str.substring(DATA_HEX_LEN * i, DATA_HEX_LEN * (i + 1))
+                    .replaceFirst("^0*", "");
+            res.append(hex);
             if (i < cnt - 1)
-                decArr.append(",");
+                res.append(",");
         }
 
-        decArr.append("]");
-        return decArr.toString();
+        res.append("]");
+        return  res.toString();
     }
 }

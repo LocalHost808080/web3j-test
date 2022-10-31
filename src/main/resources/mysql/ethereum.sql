@@ -5,11 +5,12 @@
 CREATE DATABASE IF NOT EXISTS ethereum;
 USE ethereum;
 
+
 # Todo: custom_block ------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS custom_block;
 
-# 在 Java 实体类中进行的修改：把 Long 改为 BigInteger，把 LocalDateTime 改为 Date
+# 在 Java 实体类中进行的修改：把 Long 改为 BigInteger
 CREATE TABLE `custom_block`
 (
     `id`                INT(11)    UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -46,7 +47,7 @@ CREATE TABLE `custom_block`
 
 DROP TABLE IF EXISTS custom_transaction;
 
-# 在 Java 实体类中进行的修改：把 Long 改为 BigInteger，把 LocalDateTime 改为 Date
+# 在 Java 实体类中进行的修改：把 Long 改为 BigInteger
 CREATE TABLE custom_transaction
 (
     `id`                  INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -55,7 +56,7 @@ CREATE TABLE custom_transaction
     `block_number`        BIGINT UNSIGNED  NOT NULL COMMENT '区块编号',
     `timestamp`           DATETIME         NOT NULL COMMENT '时间戳',
     `from_account`        VARCHAR(255)     NOT NULL COMMENT '交易发起账号',
-    `to_account`          VARCHAR(255)     NOT NULL COMMENT '交易接受账号',
+    `to_account`          VARCHAR(255)     NOT NULL DEFAULT '' COMMENT '交易接受账号',
     `value`               DECIMAL(28, 18)  NOT NULL COMMENT '交易金额 (Ether)',
     `tx_fee`              DECIMAL(28, 18)  NOT NULL COMMENT '交易消耗的Gas (Ether)',
     `gas_price`           DECIMAL(28, 18)  NOT NULL COMMENT 'Gas价格 (Ether)',
@@ -83,3 +84,74 @@ CREATE TABLE custom_transaction
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '以太坊交易表';
 
 
+# Todo: custom_transfer ------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS custom_erc20_transfer;
+
+# 在 Java 实体类中进行的修改：把 Long 改为 BigInteger
+CREATE TABLE `custom_erc20_transfer`
+(
+    `id`             INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `contract_addr`  VARCHAR(255)     NOT NULL COMMENT '合约地址',
+    `from_account`   VARCHAR(255)     NOT NULL COMMENT '转账发送人',
+    `to_account`     VARCHAR(255)     NOT NULL COMMENT '转账接收人',
+    `value`          TEXT             NOT NULL COMMENT '转账代币数',
+    `tx_hash`        VARCHAR(255)     NOT NULL COMMENT '交易哈希值',
+    `tx_index`       BIGINT UNSIGNED  NOT NULL COMMENT '交易序号（在区块中）',
+    `block_hash`     VARCHAR(255)     NOT NULL COMMENT '区块哈希值',
+    `block_number`   BIGINT UNSIGNED  NOT NULL COMMENT '区块编号',
+    `create_time`    DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = 'ERC20 转账记录表';
+
+
+DROP TABLE IF EXISTS custom_erc721_transfer;
+
+# 在 Java 实体类中进行的修改：把 Long 改为 BigInteger
+CREATE TABLE `custom_erc721_transfer`
+(
+    `id`             INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `contract_addr`  VARCHAR(255)     NOT NULL COMMENT '合约地址',
+    `from_account`   VARCHAR(255)     NOT NULL COMMENT '转账发送人',
+    `to_account`     VARCHAR(255)     NOT NULL COMMENT '转账接收人',
+    `token_id`       VARCHAR(255)   NOT NULL COMMENT 'tokenID',
+    `tx_hash`        VARCHAR(255)     NOT NULL COMMENT '交易哈希值',
+    `tx_index`       BIGINT UNSIGNED  NOT NULL COMMENT '交易序号（在区块中）',
+    `block_hash`     VARCHAR(255)     NOT NULL COMMENT '区块哈希值',
+    `block_number`   BIGINT UNSIGNED  NOT NULL COMMENT '区块编号',
+    `create_time`    DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = 'ERC721 转账记录表';
+
+
+DROP TABLE IF EXISTS custom_erc1155_transfer;
+
+# 在 Java 实体类中进行的修改：把 Long 改为 BigInteger
+CREATE TABLE `custom_erc1155_transfer`
+(
+    `id`             INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `contract_addr`  VARCHAR(255)     NOT NULL COMMENT '合约地址',
+    `from_account`   VARCHAR(255)     NOT NULL COMMENT '转账发送人',
+    `to_account`     VARCHAR(255)     NOT NULL COMMENT '转账接收人',
+    `operator`       VARCHAR(255)     NOT NULL COMMENT '操作',
+    `token_ids`      VARCHAR(255)     NOT NULL COMMENT 'Token id 数组',
+    `token_values`   VARCHAR(255)     NOT NULL COMMENT 'Token 数量数组',
+    `tx_hash`        VARCHAR(255)     NOT NULL COMMENT '交易哈希值',
+    `tx_index`       BIGINT UNSIGNED  NOT NULL COMMENT '交易序号（在区块中）',
+    `block_hash`     VARCHAR(255)     NOT NULL COMMENT '区块哈希值',
+    `block_number`   BIGINT UNSIGNED  NOT NULL COMMENT '区块编号',
+    `create_time`    DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = 'ERC1155 转账记录表';
+
+
+
+# Todo: Test --------------------------------------------------------------------------------------
+
+# SELECT  id,block_hash,burnt_fees,tx_savings_fees,gas_limit,gas_used,ether_price,private_note,from,value,gas_fees_base,timestamp,gas_price,logs_bloom,input_data,gas_fees_max_pri,gas_fees_max,tx_type,nonce,r,s,create_time,block_number,tx_fee,cumulative_gas_used,to,hash,tx_index,status  FROM custom_transaction     WHERE (hash = ?)
+
+SELECT COUNT(*) as `Block Count` FROM custom_block;                         -- 68
+SELECT COUNT(*) as `Transaction Count` FROM custom_transaction;             -- 6073
+SELECT COUNT(*) as `ERC20 Transfer Count` FROM custom_erc20_transfer;       -- 2385
+SELECT COUNT(*) as `ERC721 Transfer Count` FROM custom_erc721_transfer;     -- 383
+SELECT COUNT(*) as `ERC1155 Transfer Count` FROM custom_erc1155_transfer;   -- 72
