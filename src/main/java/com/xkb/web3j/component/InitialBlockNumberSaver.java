@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 
-// @Component
+@Component
 public class InitialBlockNumberSaver implements ApplicationRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(InitialBlockNumberSaver.class);

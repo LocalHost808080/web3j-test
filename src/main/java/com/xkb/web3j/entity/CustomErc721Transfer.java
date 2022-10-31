@@ -3,6 +3,8 @@ package com.xkb.web3j.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -41,19 +43,19 @@ public class CustomErc721Transfer implements Serializable {
     private String toAccount;
 
     @ApiModelProperty(value = "tokenID")
-    private Long tokenId;
+    private String tokenId;
 
     @ApiModelProperty(value = "交易哈希值")
     private String txHash;
 
     @ApiModelProperty(value = "交易序号（在区块中）")
-    private Long txIndex;
+    private BigInteger txIndex;
 
     @ApiModelProperty(value = "区块哈希值")
     private String blockHash;
 
     @ApiModelProperty(value = "区块编号")
-    private Long blockNumber;
+    private BigInteger blockNumber;
 
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;

@@ -2,6 +2,7 @@ package com.xkb.web3j.service;
 
 import com.xkb.web3j.entity.CustomErc1155Transfer;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.web3j.protocol.core.methods.response.Log;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CustomErc1155TransferService extends IService<CustomErc1155Transfer> {
 
+    void saveErc1155TransferInfo(Log log);
 }

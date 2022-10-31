@@ -17,6 +17,4 @@ import java.util.List;
 public interface CustomTransactionService extends IService<CustomTransaction> {
 
     int saveTransactionInfo(List<Transaction> txInfos) throws Exception;
-
-    CustomTransaction convertTransactionToCustom(Transaction txInfo) throws Exception;
 }

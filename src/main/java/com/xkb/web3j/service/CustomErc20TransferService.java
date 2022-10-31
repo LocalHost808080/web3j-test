@@ -2,6 +2,7 @@ package com.xkb.web3j.service;
 
 import com.xkb.web3j.entity.CustomErc20Transfer;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 /**
@@ -14,5 +15,5 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
  */
 public interface CustomErc20TransferService extends IService<CustomErc20Transfer> {
 
-    int saveErc20TransferInfo(TransactionReceipt txRcpt) throws Exception;
+    void saveErc20TransferInfo(Log log);
 }

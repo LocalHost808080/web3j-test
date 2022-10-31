@@ -2,14 +2,13 @@ package com.xkb.web3j.service.impl;
 
 import com.xkb.web3j.entity.CustomTransaction;
 import com.xkb.web3j.mapper.CustomTransactionMapper;
-import com.xkb.web3j.service.AsyncCustomTransactionService;
-import com.xkb.web3j.service.BlockChainDataService;
-import com.xkb.web3j.service.CustomTransferService;
+import com.xkb.web3j.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
@@ -17,11 +16,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 
 @Service
 public class AsyncCustomTransactionServiceImpl implements AsyncCustomTransactionService {
 
     private static final Logger logger = LoggerFactory.getLogger(AsyncCustomTransactionServiceImpl.class);
+
+    private static final String TRANSFER_HASH = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 
     @Autowired
     private CustomTransactionMapper customTransactionMapper;
@@ -30,7 +32,13 @@ public class AsyncCustomTransactionServiceImpl implements AsyncCustomTransaction
     private BlockChainDataService blockChainInfoService;
 
     @Autowired
-    private CustomTransferService customTransferService;
+    private CustomErc20TransferService customErc20TransferService;
+
+    @Autowired
+    private CustomErc721TransferService customErc721TransferService;
+
+    @Autowired
+    private CustomErc1155TransferService customErc1155TransferService;
 
     @Async("threadPoolTaskExecutor")
     @Override
@@ -38,8 +46,7 @@ public class AsyncCustomTransactionServiceImpl implements AsyncCustomTransaction
 
         CustomTransaction customTransaction = new CustomTransaction();
         TransactionReceipt txRcpt = blockChainInfoService.getTransactionReceiptByHash(txInfo.getHash());
-
-        customTransferService.saveErc20TokenTransferInfo(txRcpt);
+        this.identifyErcTypeAndSave(txRcpt);
 
         customTransaction.setHash(txInfo.getHash());
 
@@ -87,7 +94,20 @@ public class AsyncCustomTransactionServiceImpl implements AsyncCustomTransaction
 
         customTransaction.setCreateTime(LocalDateTime.now());
 
-        // return customTransaction;
         customTransactionMapper.insert(customTransaction);
+    }
+
+    @Override
+    public void identifyErcTypeAndSave(TransactionReceipt txRcpt) {
+
+        for (Log log : txRcpt.getLogs()) {
+            List<String> topics = log.getTopics();
+            if (topics.size() == 3 && TRANSFER_HASH.equals(topics.get(0)))
+                customErc20TransferService.saveErc20TransferInfo(log);
+            else if ("0x".equals(log.getData()) && topics.size() == 4 && TRANSFER_HASH.equals(topics.get(0)))
+                customErc721TransferService.saveErc721TransferInfo(log);
+            else if ((!"0x".equals(log.getData())) && topics.size() == 4)
+                customErc721TransferService.saveErc721TransferInfo(log);
+        }
     }
 }
