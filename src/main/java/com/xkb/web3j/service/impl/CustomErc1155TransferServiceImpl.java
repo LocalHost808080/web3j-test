@@ -23,6 +23,7 @@ public class CustomErc1155TransferServiceImpl extends ServiceImpl<CustomErc1155T
     private CustomErc1155TransferMapper customErc1155TransferMapper;
 
     private static final int DATA_HEX_LEN = 64;
+
     @Override
     public void saveErc1155TransferInfo(Log log) {
 
